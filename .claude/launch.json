@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "summarise-php",
+      "runtimeExecutable": "C:\\xampp\\php\\php.exe",
+      "runtimeArgs": ["-S", "localhost:8765", "-t", "C:\\Users\\Prashant\\Desktop\\ALL\\summarise.in"],
+      "port": 8765,
+      "url": "http://localhost:8765"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+# Summarise Corporate — robots.txt
+
+# Search engines: full access
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# AI answer engines: allowed (educational content is discoverable)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# All other bots: default to crawlable
+User-agent: *
+Allow: /
+Disallow: /includes/
+Disallow: /assets/img/og/*.psd
+Disallow: /*?*
+
+# Sitemap
+Sitemap: https://www.summarise.in/sitemap.xml

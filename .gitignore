@@ -1,0 +1,19 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Local server / build artefacts
+/.php-serve.log
+/vendor/
+
+# Backups
+*.bak
+*~
+
+# Local secrets (never commit)
+/includes/secrets.local.php

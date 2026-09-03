@@ -1,0 +1,73 @@
+# Summarise Corporate — Apache config
+# Handles: HTTPS + www canonical, clean URLs (no .php), security headers, custom 404.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1) Force HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 2) Force canonical www.summarise.in (drop the naked apex)
+  RewriteCond %{HTTP_HOST} ^summarise\.in$ [NC]
+  RewriteRule ^ https://www.summarise.in%{REQUEST_URI} [L,R=301]
+
+  # 3) Remove trailing slash from non-directory URLs
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+  # 4) If someone hits /foo.php directly, 301 to clean /foo
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[\s?] [NC]
+  RewriteRule ^ /%1 [L,R=301]
+
+  # 5) Internally rewrite /foo → /foo.php (only if the .php exists)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.+?)/?$ /$1.php [L]
+</IfModule>
+
+# Custom 404
+ErrorDocument 404 /404.php
+
+# ---- Security headers ---------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), interest-cohort=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+</IfModule>
+
+# ---- Compression --------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE application/x-font-woff2 image/svg+xml
+</IfModule>
+
+# ---- Cache control (static assets) --------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                 "access plus 30 days"
+  ExpiresByType application/javascript   "access plus 30 days"
+  ExpiresByType image/jpeg               "access plus 90 days"
+  ExpiresByType image/png                "access plus 90 days"
+  ExpiresByType image/svg+xml            "access plus 90 days"
+  ExpiresByType image/webp               "access plus 90 days"
+  ExpiresByType font/woff2               "access plus 365 days"
+  ExpiresByType application/pdf          "access plus 30 days"
+  ExpiresDefault                         "access plus 1 day"
+</IfModule>
+
+# ---- Prevent access to includes ----------------------------------------
+<FilesMatch "^(config|head|header|footer|calendly-modal)\.php$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteRule ^includes/ - [F,L]
+</IfModule>
+
+# ---- Default index --------------------------------------------------
+DirectoryIndex index.php index.html
