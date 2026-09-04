@@ -21,7 +21,7 @@ $__root = site_root();
     <div class="footer-grid">
       <div class="footer-brand">
         <a class="brand" href="<?= $__root ?>">
-          <img src="<?= $__root ?>assets/img/brand/logo.png" alt="<?= htmlspecialchars(BIZ_TRADING_NAME, ENT_QUOTES) ?>" width="1600" height="1600" loading="lazy" decoding="async">
+          <img src="<?= $__root ?>assets/img/brand/logo-white.png" alt="<?= htmlspecialchars(BIZ_TRADING_NAME, ENT_QUOTES) ?>" width="1600" height="1600" loading="lazy" decoding="async">
         </a>
         <p class="mt-2"><?= htmlspecialchars(BIZ_TAGLINE, ENT_QUOTES) ?></p>
         <p class="small mt-2" style="color:rgba(255,255,255,0.55);">

@@ -1,19 +1,12 @@
-/* Summarise Corporate — site scripts (v3, premium + animated)
-   No dependencies. Handles:
-     - Mobile nav toggle
-     - Calendly modal + 7-second auto-popup
-     - Sticky actions
-     - Scroll-reveal animations
-     - Counter-up on stats
-     - 3D-tilt on cards
-     - Hero parallax
-     - FAQ live search + smooth open/close
-*/
+/* Summarise Corporate — v4 site scripts
+   Nav, Calendly modal + auto-popup, scroll reveal, counter-up, tilt,
+   mouse-follow spotlight on cards, magnetic buttons, smooth page fade. */
 
 (function () {
   'use strict';
 
   var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isTouch = window.matchMedia && window.matchMedia('(hover: none)').matches;
 
   // ---- Mobile nav toggle -------------------------------------------------
   var nav = document.querySelector('[data-nav]');
@@ -32,17 +25,12 @@
 
   function openModal(source) {
     if (!modal) return;
-    if (iframe && iframeSrc && !iframe.getAttribute('src')) {
-      iframe.setAttribute('src', iframeSrc);
-    }
+    if (iframe && iframeSrc && !iframe.getAttribute('src')) iframe.setAttribute('src', iframeSrc);
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (typeof window.gtag === 'function') {
-      window.gtag('event', 'book_consultation_open', {
-        location: window.location.pathname,
-        source: source || 'manual'
-      });
+      window.gtag('event', 'book_consultation_open', { location: window.location.pathname, source: source || 'manual' });
     }
   }
   function closeModal() {
@@ -51,14 +39,11 @@
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
-
   document.addEventListener('click', function (e) {
     var trigger = e.target.closest('[data-modal-open="calendly"]');
     if (trigger) { e.preventDefault(); openModal('cta'); return; }
     if (e.target.closest('[data-modal-close]')) { closeModal(); return; }
-    if (modal && modal.classList.contains('is-open') && e.target === modal.querySelector('.modal__scrim')) {
-      closeModal();
-    }
+    if (modal && modal.classList.contains('is-open') && e.target === modal.querySelector('.modal__scrim')) closeModal();
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) closeModal();
@@ -68,7 +53,6 @@
   var AUTO_DELAY_MS = 7000;
   var STORAGE_KEY = 'summ_autopopup_v1';
   var isExcludedPage = /\/legal\//.test(window.location.pathname);
-
   function tryAutoOpen() {
     if (!modal) return;
     try { if (sessionStorage.getItem(STORAGE_KEY) === '1') return; } catch (_) {}
@@ -94,24 +78,21 @@
 
   // ---- Active-nav highlight ---------------------------------------------
   try {
-    var path = window.location.pathname.replace(/\/index\.php$/, '/').replace(/\.php$/, '');
+    var path = window.location.pathname.replace(/\/index\.(php|html)$/, '/').replace(/\.(php|html)$/, '');
     if (path === '') path = '/';
     document.querySelectorAll('.nav-list > li > a[href]').forEach(function (a) {
-      var href = a.getAttribute('href').replace(/\/index\.php$/, '/').replace(/\.php$/, '');
+      var href = a.getAttribute('href').replace(/\/index\.(php|html)$/, '/').replace(/\.(php|html)$/, '');
       if (href === '/' && path === '/') { a.classList.add('is-active'); return; }
       if (href !== '/' && path.indexOf(href) === 0) a.classList.add('is-active');
     });
   } catch (_) {}
 
-  // ---- Scroll reveal (IntersectionObserver) -----------------------------
+  // ---- Scroll reveal ----------------------------------------------------
   if ('IntersectionObserver' in window && !prefersReducedMotion) {
     document.documentElement.classList.add('reveal-ready');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(function (el) {
@@ -122,29 +103,23 @@
       }
     });
     setTimeout(function () {
-      document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach(function (el) {
-        el.classList.add('is-visible');
-      });
+      document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach(function (el) { el.classList.add('is-visible'); });
     }, 3000);
   }
 
-  // ---- Counter-up on stat values ---------------------------------------
-  // Any element with data-count="123" (optional data-suffix="+", data-prefix="₹")
-  // will animate from 0 → target once it scrolls into view.
+  // ---- Counter-up -------------------------------------------------------
   function animateCount(el) {
     var target = parseFloat(el.getAttribute('data-count'));
     var suffix = el.getAttribute('data-suffix') || '';
     var prefix = el.getAttribute('data-prefix') || '';
     if (isNaN(target)) return;
     if (prefersReducedMotion) { el.textContent = prefix + target + suffix; return; }
-    var duration = parseInt(el.getAttribute('data-duration') || '1400', 10);
+    var duration = parseInt(el.getAttribute('data-duration') || '1500', 10);
     var start = performance.now();
     function frame(now) {
       var p = Math.min(1, (now - start) / duration);
-      // easeOutCubic
       var eased = 1 - Math.pow(1 - p, 3);
       var val = target * eased;
-      // Integer targets: show whole numbers; decimals: 1 dp
       var display = Number.isInteger(target) ? Math.round(val) : val.toFixed(1);
       el.textContent = prefix + display + suffix;
       if (p < 1) requestAnimationFrame(frame);
@@ -153,25 +128,30 @@
   }
   if ('IntersectionObserver' in window) {
     var countIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          countIO.unobserve(entry.target);
-        }
-      });
+      entries.forEach(function (entry) { if (entry.isIntersecting) { animateCount(entry.target); countIO.unobserve(entry.target); } });
     }, { threshold: 0.4 });
     document.querySelectorAll('[data-count]').forEach(function (el) { countIO.observe(el); });
   }
 
-  // ---- Subtle 3D tilt on cards ------------------------------------------
-  // Opt in with data-tilt on any card. Cheap: no dependencies, gracefully
-  // disabled for reduced-motion and touch devices.
-  var isTouch = window.matchMedia && window.matchMedia('(hover: none)').matches;
+  // ---- Mouse-follow spotlight on every .card ----------------------------
+  if (!prefersReducedMotion && !isTouch) {
+    document.querySelectorAll('.card').forEach(function (el) {
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var mx = ((e.clientX - r.left) / r.width) * 100;
+        var my = ((e.clientY - r.top)  / r.height) * 100;
+        el.style.setProperty('--mx', mx + '%');
+        el.style.setProperty('--my', my + '%');
+      });
+    });
+  }
+
+  // ---- 3D tilt on opt-in cards ------------------------------------------
   if (!prefersReducedMotion && !isTouch) {
     document.querySelectorAll('[data-tilt]').forEach(function (el) {
       var raf = null;
       el.style.transformStyle = 'preserve-3d';
-      el.style.transition = 'transform 200ms cubic-bezier(.22,1,.36,1)';
+      el.style.transition = 'transform 220ms cubic-bezier(.22,1,.36,1)';
       el.addEventListener('mousemove', function (e) {
         var r = el.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
@@ -188,8 +168,33 @@
     });
   }
 
-  // ---- Hero parallax ----------------------------------------------------
-  // Any element with data-parallax="0.3" (speed) drifts up on scroll.
+  // ---- Magnetic buttons -------------------------------------------------
+  // Every element with data-magnetic pulls a bit toward the cursor.
+  if (!prefersReducedMotion && !isTouch) {
+    document.querySelectorAll('[data-magnetic]').forEach(function (el) {
+      var strength = parseFloat(el.getAttribute('data-magnetic')) || 0.35;
+      var raf = null;
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var cy = r.top  + r.height / 2;
+        var mx = (e.clientX - cx) * strength;
+        var my = (e.clientY - cy) * strength;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function () {
+          el.style.setProperty('--mx', mx.toFixed(1) + 'px');
+          el.style.setProperty('--my', my.toFixed(1) + 'px');
+        });
+      });
+      el.addEventListener('mouseleave', function () {
+        if (raf) cancelAnimationFrame(raf);
+        el.style.setProperty('--mx', '0px');
+        el.style.setProperty('--my', '0px');
+      });
+    });
+  }
+
+  // ---- Parallax opt-in --------------------------------------------------
   if (!prefersReducedMotion) {
     var parallaxEls = document.querySelectorAll('[data-parallax]');
     if (parallaxEls.length) {
@@ -208,7 +213,33 @@
     }
   }
 
-  // ---- FAQ live filter + category tabs ---------------------------------
+  // ---- Smooth page transitions ------------------------------------------
+  // Fade the current page out, then let the navigation happen. Same-origin,
+  // non-modifier-key clicks on internal links only.
+  if (!prefersReducedMotion) {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#') return;
+      if (a.target === '_blank' || a.hasAttribute('download')) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      // Only same-origin, non-file, non-mailto
+      if (/^(https?:)?\/\//.test(href) && href.indexOf(location.origin) !== 0) return;
+      if (/^(mailto:|tel:|whatsapp:)/i.test(href)) return;
+      // Skip if there's data-modal-open (Calendly)
+      if (a.hasAttribute('data-modal-open')) return;
+      document.documentElement.classList.add('page-leaving');
+      // If the navigation is cancelled or the page comes back, remove it
+      setTimeout(function () { document.documentElement.classList.remove('page-leaving'); }, 800);
+    });
+    // On BF-cache restore, clear the state
+    window.addEventListener('pageshow', function () {
+      document.documentElement.classList.remove('page-leaving');
+    });
+  }
+
+  // ---- FAQ live filter + tabs ------------------------------------------
   var faqSearch = document.querySelector('[data-faq-search]');
   var faqItems  = document.querySelectorAll('[data-faq-item]');
   var faqTabs   = document.querySelectorAll('[data-faq-tab]');
@@ -230,10 +261,7 @@
     });
     if (faqEmpty) faqEmpty.hidden = shown > 0;
   }
-
-  if (faqSearch) {
-    faqSearch.addEventListener('input', function () { faqQuery = faqSearch.value || ''; faqFilter(); });
-  }
+  if (faqSearch) faqSearch.addEventListener('input', function () { faqQuery = faqSearch.value || ''; faqFilter(); });
   faqTabs.forEach(function (tab) {
     tab.addEventListener('click', function () {
       faqTabs.forEach(function (t) { t.classList.remove('is-active'); t.setAttribute('aria-pressed', 'false'); });
@@ -244,7 +272,7 @@
     });
   });
 
-  // ---- Smooth-scroll fallback for anchor links --------------------------
+  // ---- Smooth anchor scroll --------------------------------------------
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = a.getAttribute('href');
