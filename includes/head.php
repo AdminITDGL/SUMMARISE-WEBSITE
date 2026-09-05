@@ -148,8 +148,10 @@ if (!empty($page['json_ld']) && is_array($page['json_ld'])) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-<!-- Styles -->
-<link rel="stylesheet" href="<?= $__root ?>assets/css/style.css">
+<!-- Styles — asset URL is versioned with each build's mtime so CDN & browser
+     caches invalidate automatically on redeploy. -->
+<?php $__cssVer = @filemtime(__DIR__ . '/../assets/css/style.css') ?: time(); ?>
+<link rel="stylesheet" href="<?= $__root ?>assets/css/style.css?v=<?= $__cssVer ?>">
 
 <!-- Google Search Console verification (fill in constant when available) -->
 <?php if (GSC_VERIFICATION_CODE): ?>

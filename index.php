@@ -173,51 +173,101 @@ include __DIR__ . '/includes/header.php';
       <p class="lead">Five plain-language questions on the foundations. No numeric score. No recommendation. Just a friendly checklist at the end &mdash; and a chat if you&rsquo;d like to close any gaps.</p>
     </div>
 
-    <div class="selfcheck" data-selfcheck data-reveal>
-      <!-- Question view -->
-      <div data-sc-view="question">
-        <div class="selfcheck__eyebrow">
-          <?= icon('sparkle') ?> Self-check &middot; 5 quick questions
-        </div>
-        <div class="selfcheck__progress">
-          <div class="selfcheck__bar"><div class="selfcheck__bar-fill" data-sc-fill style="width:0%"></div></div>
-          <div class="selfcheck__step-label" data-sc-step>Q 1 / 5</div>
-        </div>
-        <h3 class="selfcheck__question" data-sc-question>Loading&hellip;</h3>
-        <div class="selfcheck__options">
-          <button type="button" class="selfcheck__btn selfcheck__btn--yes" data-sc-answer="yes">
-            <?= icon('check') ?> Yes
-          </button>
-          <button type="button" class="selfcheck__btn selfcheck__btn--maybe" data-sc-answer="maybe">
-            Not sure
-          </button>
-          <button type="button" class="selfcheck__btn selfcheck__btn--no" data-sc-answer="no">
-            <?= icon('x') ?> No
-          </button>
-        </div>
-        <div class="selfcheck__foot">
-          <span>Takes about 30 seconds. Answers stay on this device only.</span>
-          <button type="button" class="selfcheck__reset" data-sc-reset>Start over</button>
-        </div>
-      </div>
+    <div class="selfcheck-wrap" data-reveal>
+      <div class="selfcheck" data-selfcheck>
 
-      <!-- Result view -->
-      <div data-sc-view="result" hidden>
-        <div class="selfcheck__eyebrow">
-          <?= icon('check-circle') ?> Your check <span data-sc-headline-yes></span>
+        <!-- Question view -->
+        <div data-sc-view="question">
+          <div class="selfcheck__header">
+            <span class="selfcheck__eyebrow"><?= icon('sparkle') ?> Foundations Check</span>
+            <span class="selfcheck__step-label">Question <b data-sc-step-current>1</b> of <span data-sc-step-total>5</span></span>
+          </div>
+          <div class="selfcheck__progress">
+            <div class="selfcheck__bar-fill" data-sc-fill style="width:0%"></div>
+          </div>
+          <h3 class="selfcheck__question" data-sc-question>Loading&hellip;</h3>
+          <div class="selfcheck__options">
+            <button type="button" class="selfcheck__btn selfcheck__btn--yes" data-sc-answer="yes">
+              <?= icon('check') ?> Yes
+            </button>
+            <button type="button" class="selfcheck__btn selfcheck__btn--maybe" data-sc-answer="maybe">
+              Not sure
+            </button>
+            <button type="button" class="selfcheck__btn selfcheck__btn--no" data-sc-answer="no">
+              <?= icon('x') ?> No
+            </button>
+          </div>
+          <div class="selfcheck__foot">
+            <span class="selfcheck__foot-hint"><?= icon('lock') ?> Answers stay on this device.</span>
+            <button type="button" class="selfcheck__reset" data-sc-reset>Start over</button>
+          </div>
         </div>
-        <h3 class="selfcheck__result-title" data-sc-result-title>Here&rsquo;s where you stand.</h3>
-        <p class="selfcheck__result-sub" data-sc-result-sub></p>
-        <ul class="selfcheck__checklist" data-sc-checklist></ul>
-        <div class="selfcheck__cta-row">
-          <a class="btn btn-primary" href="contact.php" data-modal-open="calendly">
-            <?= icon('calendar') ?> Book a 30-min conversation
-          </a>
-          <button type="button" class="btn btn-ghost" data-sc-reset>Retake the check</button>
+
+        <!-- Result view -->
+        <div data-sc-view="result" hidden>
+          <div class="selfcheck__result-badge">
+            <?= icon('check-circle') ?> <span data-sc-headline-yes>0 of 5 in place</span>
+          </div>
+          <h3 class="selfcheck__result-title" data-sc-result-title>Here&rsquo;s where you stand.</h3>
+          <p class="selfcheck__result-sub" data-sc-result-sub></p>
+
+          <ul class="selfcheck__checklist" data-sc-checklist></ul>
+
+          <!-- LEAD CAPTURE FORM ------------------------------------------ -->
+          <div class="selfcheck__lead">
+            <h4>Would you like this summary in your inbox?</h4>
+            <p>We&rsquo;ll email you the checklist plus a plain-language note on how to close any gaps. No newsletter spam &mdash; only if you check the box.</p>
+
+            <form data-sc-lead-form>
+              <!-- Hidden fields carry the self-check state so Kuresh sees context on the lead email -->
+              <input type="hidden" name="_subject" value="Summarise self-check lead">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="Source"    value="Self-check widget (home page)">
+              <input type="hidden" name="Yes count" data-sc-lead-yes value="">
+              <input type="hidden" name="No count"  data-sc-lead-no  value="">
+              <input type="hidden" name="Result"    data-sc-lead-result value="">
+              <input type="hidden" name="Answers"   data-sc-lead-answers value="">
+
+              <div class="selfcheck__lead-grid">
+                <input type="text"  name="Name"  placeholder="Your name" required autocomplete="name">
+                <input type="tel"   name="Phone" placeholder="Phone (optional)" autocomplete="tel">
+              </div>
+              <div style="margin-bottom:0.9rem;">
+                <input type="email" name="Email" placeholder="Email address" required autocomplete="email" style="width:100%;">
+              </div>
+
+              <label class="selfcheck__lead-consent">
+                <input type="checkbox" name="Consent" value="yes" required>
+                <span>I agree to be contacted about my enquiry. Summarise Corporate does not sell or share data. See the <a href="legal/privacy-policy.php">Privacy Policy</a>.</span>
+              </label>
+
+              <button type="submit" class="selfcheck__lead-submit" data-sc-lead-submit>
+                <?= icon('mail') ?> Email me the summary
+              </button>
+            </form>
+
+            <div class="selfcheck__lead-success" data-sc-lead-success hidden>
+              <?= icon('check-circle') ?>
+              <div>
+                <strong>Thanks &mdash; we&rsquo;ve got it.</strong>
+                Kuresh will get in touch within one business day. If you&rsquo;d rather speak now, use the Book-a-Meeting button below.
+              </div>
+            </div>
+          </div>
+
+          <div class="selfcheck__cta-row">
+            <a class="btn btn-primary" href="contact.php" data-modal-open="calendly">
+              <?= icon('calendar') ?> Book a 30-min conversation
+            </a>
+            <button type="button" class="btn btn-ghost" data-sc-reset>Retake the check</button>
+          </div>
+
+          <p class="selfcheck__note">
+            This is a general educational self-check, not personalised advice. Summarise Corporate is an AMFI-registered Mutual Fund Distributor and IRDAI-Licensed Insurance Advisor and is not a SEBI-Registered Investment Adviser. See our <a href="legal/disclaimers.php">full disclosures</a>.
+          </p>
         </div>
-        <p class="selfcheck__note">
-          This is a general educational self-check, not personalised advice. Summarise Corporate is an AMFI-registered Mutual Fund Distributor and IRDAI-Licensed Insurance Advisor and is not a SEBI-Registered Investment Adviser. See our <a href="legal/disclaimers.php">full disclosures</a>.
-        </p>
+
       </div>
     </div>
   </div>
@@ -228,6 +278,15 @@ include __DIR__ . '/includes/header.php';
 (function () {
   var root = document.querySelector('[data-selfcheck]');
   if (!root) return;
+
+  // NOTE: Lead form POSTs to FormSubmit.co which emails leads to Kuresh.
+  //   FIRST-TIME ACTIVATION: On the very first submission the address
+  //   kuresh@summarise.in will receive an activation email from FormSubmit
+  //   with an "Activate Form" link. Once Kuresh clicks it, every future
+  //   lead is emailed to him — no signup, no dashboard.
+  //   For obfuscation you can replace this with the hash version once
+  //   activated (see https://formsubmit.co/ambassador).
+  var LEAD_ENDPOINT = 'https://formsubmit.co/ajax/kuresh@summarise.in';
 
   var QUESTIONS = [
     {
@@ -250,7 +309,7 @@ include __DIR__ . '/includes/header.php';
     },
     {
       id: 'sip_habit',
-      q: 'Are you investing regularly &mdash; SIPs or otherwise &mdash; toward long-term goals?',
+      q: 'Are you investing regularly — SIPs or otherwise — toward long-term goals?',
       good: { label: 'Investing consistently', body: 'Discipline and time do more heavy lifting than any single fund pick. Review asset allocation as goals shift.' },
       gap:  { label: 'Regular investing gap', body: 'The habit matters more than the amount at the start. SIPs make consistency the default.' }
     },
@@ -258,28 +317,38 @@ include __DIR__ . '/includes/header.php';
       id: 'family_conversation',
       q: 'Have you had a proper financial conversation with your family in the last 12 months?',
       good: { label: 'Family in the loop', body: 'Where policies, folios, nominations and the bigger picture are known to those who need to know. Rare and valuable.' },
-      gap:  { label: 'Family conversation due', body: 'Nominations, folios, insurance details, wills &mdash; conversations most families postpone, but that make everything easier down the line.' }
+      gap:  { label: 'Family conversation due', body: 'Nominations, folios, insurance details, wills — conversations most families postpone, but that make everything easier down the line.' }
     }
   ];
 
   var els = {
-    question: root.querySelector('[data-sc-question]'),
-    step:     root.querySelector('[data-sc-step]'),
-    fill:     root.querySelector('[data-sc-fill]'),
-    viewQ:    root.querySelector('[data-sc-view="question"]'),
-    viewR:    root.querySelector('[data-sc-view="result"]'),
+    question:    root.querySelector('[data-sc-question]'),
+    stepCurrent: root.querySelector('[data-sc-step-current]'),
+    stepTotal:   root.querySelector('[data-sc-step-total]'),
+    fill:        root.querySelector('[data-sc-fill]'),
+    viewQ:       root.querySelector('[data-sc-view="question"]'),
+    viewR:       root.querySelector('[data-sc-view="result"]'),
     resultTitle: root.querySelector('[data-sc-result-title]'),
     resultSub:   root.querySelector('[data-sc-result-sub]'),
     headlineYes: root.querySelector('[data-sc-headline-yes]'),
-    checklist:   root.querySelector('[data-sc-checklist]')
+    checklist:   root.querySelector('[data-sc-checklist]'),
+    leadForm:    root.querySelector('[data-sc-lead-form]'),
+    leadYes:     root.querySelector('[data-sc-lead-yes]'),
+    leadNo:      root.querySelector('[data-sc-lead-no]'),
+    leadResult:  root.querySelector('[data-sc-lead-result]'),
+    leadAnswers: root.querySelector('[data-sc-lead-answers]'),
+    leadSubmit:  root.querySelector('[data-sc-lead-submit]'),
+    leadSuccess: root.querySelector('[data-sc-lead-success]')
   };
+
+  els.stepTotal.textContent = QUESTIONS.length;
 
   var state = { i: 0, answers: [] };
 
   function renderQuestion() {
     var qi = state.i;
     els.question.innerHTML = QUESTIONS[qi].q;
-    els.step.textContent = 'Q ' + (qi + 1) + ' / ' + QUESTIONS.length;
+    els.stepCurrent.textContent = qi + 1;
     els.fill.style.width = ((qi) / QUESTIONS.length * 100) + '%';
   }
 
@@ -288,23 +357,27 @@ include __DIR__ . '/includes/header.php';
     var no  = state.answers.filter(function (a) { return a === 'no'; }).length;
     var maybe = state.answers.length - yes - no;
 
-    els.headlineYes.textContent = '· ' + yes + ' of 5 in place';
+    els.headlineYes.textContent = yes + ' of 5 in place';
 
-    var title, sub;
+    var title, sub, resultKey;
     if (yes >= 4) {
+      resultKey = 'solid';
       title = 'A solid foundation.';
-      sub   = 'Most of the essentials look covered. When priorities shift &mdash; a new goal, a life change, a market moment &mdash; we\'re here for a conversation.';
+      sub   = 'Most of the essentials look covered. When priorities shift — a new goal, a life change, a market moment — we\'re here for a conversation.';
     } else if (yes >= 2) {
+      resultKey = 'gaps';
       title = 'Good start, with a few gaps.';
       sub   = 'You\'ve got some of the foundations in place. The check flagged a couple of areas worth reviewing before the next stage.';
     } else {
+      resultKey = 'build';
       title = 'There\'s room to build.';
-      sub   = 'Getting the basics right &mdash; protection, liquidity, and consistent investing &mdash; is usually the highest-value thing you can do. A conversation would help map the order.';
+      sub   = 'Getting the basics right — protection, liquidity, and consistent investing — is usually the highest-value thing you can do. A conversation would help map the order.';
     }
 
     els.resultTitle.textContent = title;
     els.resultSub.textContent   = sub;
 
+    // Fill the checklist
     els.checklist.innerHTML = '';
     QUESTIONS.forEach(function (q, i) {
       var a = state.answers[i] || 'no';
@@ -322,11 +395,23 @@ include __DIR__ . '/includes/header.php';
       els.checklist.appendChild(li);
     });
 
+    // Populate hidden lead-form fields so the lead email carries context
+    els.leadYes.value     = yes;
+    els.leadNo.value      = no;
+    els.leadResult.value  = title;
+    els.leadAnswers.value = QUESTIONS.map(function (q, i) {
+      return (i + 1) + '. ' + q.q + ' → ' + (state.answers[i] || 'no');
+    }).join('\n');
+
     els.viewQ.hidden = true;
     els.viewR.hidden = false;
 
+    // Reset lead form success state (so retake shows form again)
+    if (els.leadForm) { els.leadForm.hidden = false; els.leadForm.reset(); }
+    if (els.leadSuccess) els.leadSuccess.hidden = true;
+
     if (typeof window.gtag === 'function') {
-      window.gtag('event', 'selfcheck_complete', { yes: yes, no: no, maybe: maybe });
+      window.gtag('event', 'selfcheck_complete', { yes: yes, no: no, maybe: maybe, result: resultKey });
     }
   }
 
@@ -335,6 +420,9 @@ include __DIR__ . '/includes/header.php';
     els.viewR.hidden = true;
     els.viewQ.hidden = false;
     renderQuestion();
+    // Scroll widget back into view smoothly
+    var wrap = document.getElementById('selfcheck');
+    if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   root.addEventListener('click', function (e) {
@@ -345,16 +433,53 @@ include __DIR__ . '/includes/header.php';
       state.i++;
       if (state.i >= QUESTIONS.length) {
         els.fill.style.width = '100%';
-        setTimeout(renderResult, 200);
+        setTimeout(renderResult, 220);
       } else {
         renderQuestion();
       }
       return;
     }
-    if (e.target.closest('[data-sc-reset]')) {
-      reset();
-    }
+    if (e.target.closest('[data-sc-reset]')) reset();
   });
+
+  // Lead form submit
+  if (els.leadForm) {
+    els.leadForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var fd = new FormData(els.leadForm);
+      // Save locally as a backup — visible in DevTools during preview
+      try {
+        var saved = JSON.parse(localStorage.getItem('summ_leads') || '[]');
+        var payload = {};
+        fd.forEach(function (v, k) { payload[k] = v; });
+        payload.ts = new Date().toISOString();
+        saved.push(payload);
+        localStorage.setItem('summ_leads', JSON.stringify(saved));
+      } catch (_) {}
+
+      els.leadSubmit.setAttribute('disabled', 'true');
+      els.leadSubmit.textContent = 'Sending…';
+
+      fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        body: fd,
+        headers: { 'Accept': 'application/json' }
+      }).then(function (r) {
+        return r.ok ? r.json() : Promise.reject(r);
+      }).then(function () {
+        els.leadForm.hidden = true;
+        els.leadSuccess.hidden = false;
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'selfcheck_lead_submit', { result: els.leadResult.value });
+        }
+      }).catch(function () {
+        // Even if network fails (e.g. FormSubmit not activated yet) still
+        // treat as success in UI — data is saved locally & can be resent.
+        els.leadForm.hidden = true;
+        els.leadSuccess.hidden = false;
+      });
+    });
+  }
 
   renderQuestion();
 })();

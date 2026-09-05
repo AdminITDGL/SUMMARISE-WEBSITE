@@ -133,7 +133,10 @@ $vercel = [
     [
       'source' => '/assets/(.*)',
       'headers' => [
-        ['key' => 'Cache-Control', 'value' => 'public, max-age=31536000, immutable'],
+        // Short cache so a redesign can propagate to users the same day.
+        // The <link> URL is versioned with the build mtime (see head.php),
+        // so browsers refetch on every new deploy anyway.
+        ['key' => 'Cache-Control', 'value' => 'public, max-age=300, must-revalidate'],
       ],
     ],
     [
