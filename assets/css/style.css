@@ -811,6 +811,181 @@ a.card:hover { text-decoration: none; color: inherit; }
 .team-card__meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.85rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 @media (max-width: 640px) { .team-card { grid-template-columns: 1fr; } .team-card__photo { min-height: 220px; } }
 
+/* --- Self-check (mini quiz) — home-page engagement widget -----------
+   Framed strictly as an educational self-check, not an assessment or
+   advisory tool. No numeric "score" is displayed — only a checklist
+   with green/amber ticks and a plain-language summary. */
+.selfcheck {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: var(--shadow-md);
+  max-width: 780px; margin: 0 auto;
+  overflow: hidden;
+}
+.selfcheck::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--champagne-gold), var(--ink-bright));
+}
+.selfcheck__eyebrow {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--champagne-deep); font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+.selfcheck__eyebrow svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+.selfcheck__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+  color: var(--ink-navy);
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+  font-weight: 500;
+}
+.selfcheck__sub { color: var(--text-muted); margin: 0 0 1.5rem; }
+
+/* Progress */
+.selfcheck__progress {
+  display: flex; align-items: center; gap: 0.85rem;
+  margin-bottom: 1.75rem;
+}
+.selfcheck__bar {
+  flex: 1;
+  height: 6px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.selfcheck__bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--champagne-gold), var(--ink-bright));
+  transition: width 420ms var(--ease);
+  border-radius: 999px;
+}
+.selfcheck__step-label {
+  font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 500;
+  min-width: 4.5rem; text-align: right;
+}
+
+/* Question */
+.selfcheck__question {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  color: var(--ink-navy);
+  line-height: 1.35;
+  margin: 0 0 1.5rem;
+  min-height: 3.4em;
+  animation: sqFade 300ms var(--ease);
+}
+@keyframes sqFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.selfcheck__options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+}
+@media (max-width: 520px) { .selfcheck__options { grid-template-columns: 1fr; } }
+.selfcheck__btn {
+  padding: 0.95rem 1.1rem;
+  font-family: inherit; font-size: 0.98rem; font-weight: 500;
+  color: var(--ink-navy);
+  background: var(--white);
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.selfcheck__btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.selfcheck__btn:hover { transform: translateY(-2px); border-color: var(--champagne-gold); background: var(--sky-wash); }
+.selfcheck__btn--yes:hover { border-color: #2f9e6b; }
+.selfcheck__btn--no:hover  { border-color: #c98b4d; }
+
+/* Foot */
+.selfcheck__foot {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  flex-wrap: wrap;
+}
+.selfcheck__foot a { color: var(--ink-navy); text-decoration: underline; }
+.selfcheck__reset {
+  background: transparent; border: 0; color: var(--text-muted);
+  cursor: pointer; font-family: inherit; font-size: 0.82rem;
+  padding: 0; text-decoration: underline;
+}
+.selfcheck__reset:hover { color: var(--ink-navy); }
+
+/* Result view */
+.selfcheck__result-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  color: var(--ink-navy);
+  margin: 0 0 0.6rem;
+}
+.selfcheck__result-sub {
+  color: var(--text-muted);
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+}
+.selfcheck__checklist {
+  list-style: none; padding: 0; margin: 0 0 1.75rem;
+  display: grid; gap: 0.75rem;
+}
+.selfcheck__checklist li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 0.9rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  animation: sqFade 400ms var(--ease);
+  animation-fill-mode: both;
+}
+.selfcheck__checklist li:nth-child(1) { animation-delay: 60ms; }
+.selfcheck__checklist li:nth-child(2) { animation-delay: 140ms; }
+.selfcheck__checklist li:nth-child(3) { animation-delay: 220ms; }
+.selfcheck__checklist li:nth-child(4) { animation-delay: 300ms; }
+.selfcheck__checklist li:nth-child(5) { animation-delay: 380ms; }
+.selfcheck__mark {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.selfcheck__mark svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.6; }
+.selfcheck__mark--yes { background: #e5f6ed; color: #2f9e6b; }
+.selfcheck__mark--no  { background: #fbeadb; color: #c98b4d; }
+.selfcheck__mark--maybe { background: var(--sky-wash); color: var(--ink-bright); }
+.selfcheck__checklist strong { color: var(--ink-navy); font-weight: 600; display: block; margin-bottom: 0.15rem; }
+.selfcheck__checklist p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+
+.selfcheck__cta-row {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;
+  margin-top: 1.5rem;
+}
+.selfcheck__note {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 1rem 0 0;
+  line-height: 1.55;
+}
+
 /* --- Partner / empanelment logo strip -------------------------------
    Text-mark placeholders in serif type — swap the innerHTML for an <img
    src="assets/img/partners/hdfc-amc.svg"> once real logos are available. */

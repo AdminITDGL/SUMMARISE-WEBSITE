@@ -160,6 +160,206 @@ include __DIR__ . '/includes/header.php';
   </div>
 </section>
 
+<!-- SELF-CHECK (mini engagement widget) ================================
+     30-second yes/no self-check on financial foundations. Framed as an
+     educational self-check, not an assessment or advisory service.
+     Results are a green/amber checklist + conversation-starter — never
+     a numeric score or a product recommendation. -->
+<section class="section section--sky" id="selfcheck">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow eyebrow--center">30-second self-check</span>
+      <h2 class="headline">Where do you <em>stand</em>?</h2>
+      <p class="lead">Five plain-language questions on the foundations. No numeric score. No recommendation. Just a friendly checklist at the end &mdash; and a chat if you&rsquo;d like to close any gaps.</p>
+    </div>
+
+    <div class="selfcheck" data-selfcheck data-reveal>
+      <!-- Question view -->
+      <div data-sc-view="question">
+        <div class="selfcheck__eyebrow">
+          <?= icon('sparkle') ?> Self-check &middot; 5 quick questions
+        </div>
+        <div class="selfcheck__progress">
+          <div class="selfcheck__bar"><div class="selfcheck__bar-fill" data-sc-fill style="width:0%"></div></div>
+          <div class="selfcheck__step-label" data-sc-step>Q 1 / 5</div>
+        </div>
+        <h3 class="selfcheck__question" data-sc-question>Loading&hellip;</h3>
+        <div class="selfcheck__options">
+          <button type="button" class="selfcheck__btn selfcheck__btn--yes" data-sc-answer="yes">
+            <?= icon('check') ?> Yes
+          </button>
+          <button type="button" class="selfcheck__btn selfcheck__btn--maybe" data-sc-answer="maybe">
+            Not sure
+          </button>
+          <button type="button" class="selfcheck__btn selfcheck__btn--no" data-sc-answer="no">
+            <?= icon('x') ?> No
+          </button>
+        </div>
+        <div class="selfcheck__foot">
+          <span>Takes about 30 seconds. Answers stay on this device only.</span>
+          <button type="button" class="selfcheck__reset" data-sc-reset>Start over</button>
+        </div>
+      </div>
+
+      <!-- Result view -->
+      <div data-sc-view="result" hidden>
+        <div class="selfcheck__eyebrow">
+          <?= icon('check-circle') ?> Your check <span data-sc-headline-yes></span>
+        </div>
+        <h3 class="selfcheck__result-title" data-sc-result-title>Here&rsquo;s where you stand.</h3>
+        <p class="selfcheck__result-sub" data-sc-result-sub></p>
+        <ul class="selfcheck__checklist" data-sc-checklist></ul>
+        <div class="selfcheck__cta-row">
+          <a class="btn btn-primary" href="contact.php" data-modal-open="calendly">
+            <?= icon('calendar') ?> Book a 30-min conversation
+          </a>
+          <button type="button" class="btn btn-ghost" data-sc-reset>Retake the check</button>
+        </div>
+        <p class="selfcheck__note">
+          This is a general educational self-check, not personalised advice. Summarise Corporate is an AMFI-registered Mutual Fund Distributor and IRDAI-Licensed Insurance Advisor and is not a SEBI-Registered Investment Adviser. See our <a href="legal/disclaimers.php">full disclosures</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Self-check widget — vanilla JS, self-contained. */
+(function () {
+  var root = document.querySelector('[data-selfcheck]');
+  if (!root) return;
+
+  var QUESTIONS = [
+    {
+      id: 'life_insurance',
+      q: 'Do you have life or term insurance sized to what your family actually depends on?',
+      good: { label: 'Life cover in place', body: 'You\'ve thought about protection for your family. Worth a periodic review as responsibilities and income change.' },
+      gap:  { label: 'Life cover to review',  body: 'A common gap. Term insurance is often the most cost-effective way to protect family income.' }
+    },
+    {
+      id: 'health_insurance',
+      q: 'Do you have health insurance for yourself and your immediate family?',
+      good: { label: 'Health cover in place', body: 'One of the most important safety nets. Sum insured and network hospitals are worth checking annually.' },
+      gap:  { label: 'Health cover to review', body: 'Medical costs are the fastest-rising financial risk for Indian households. Worth understanding your options.' }
+    },
+    {
+      id: 'emergency_fund',
+      q: 'Do you have 3–6 months of essential expenses set aside as an easy-to-access emergency fund?',
+      good: { label: 'Emergency fund built', body: 'A liquid buffer means market dips don\'t force bad decisions elsewhere. Keep it topped up as expenses grow.' },
+      gap:  { label: 'Emergency fund light', body: 'Building this first tends to make every other financial decision calmer. It\'s usually the highest-value habit to establish.' }
+    },
+    {
+      id: 'sip_habit',
+      q: 'Are you investing regularly &mdash; SIPs or otherwise &mdash; toward long-term goals?',
+      good: { label: 'Investing consistently', body: 'Discipline and time do more heavy lifting than any single fund pick. Review asset allocation as goals shift.' },
+      gap:  { label: 'Regular investing gap', body: 'The habit matters more than the amount at the start. SIPs make consistency the default.' }
+    },
+    {
+      id: 'family_conversation',
+      q: 'Have you had a proper financial conversation with your family in the last 12 months?',
+      good: { label: 'Family in the loop', body: 'Where policies, folios, nominations and the bigger picture are known to those who need to know. Rare and valuable.' },
+      gap:  { label: 'Family conversation due', body: 'Nominations, folios, insurance details, wills &mdash; conversations most families postpone, but that make everything easier down the line.' }
+    }
+  ];
+
+  var els = {
+    question: root.querySelector('[data-sc-question]'),
+    step:     root.querySelector('[data-sc-step]'),
+    fill:     root.querySelector('[data-sc-fill]'),
+    viewQ:    root.querySelector('[data-sc-view="question"]'),
+    viewR:    root.querySelector('[data-sc-view="result"]'),
+    resultTitle: root.querySelector('[data-sc-result-title]'),
+    resultSub:   root.querySelector('[data-sc-result-sub]'),
+    headlineYes: root.querySelector('[data-sc-headline-yes]'),
+    checklist:   root.querySelector('[data-sc-checklist]')
+  };
+
+  var state = { i: 0, answers: [] };
+
+  function renderQuestion() {
+    var qi = state.i;
+    els.question.innerHTML = QUESTIONS[qi].q;
+    els.step.textContent = 'Q ' + (qi + 1) + ' / ' + QUESTIONS.length;
+    els.fill.style.width = ((qi) / QUESTIONS.length * 100) + '%';
+  }
+
+  function renderResult() {
+    var yes = state.answers.filter(function (a) { return a === 'yes'; }).length;
+    var no  = state.answers.filter(function (a) { return a === 'no'; }).length;
+    var maybe = state.answers.length - yes - no;
+
+    els.headlineYes.textContent = '· ' + yes + ' of 5 in place';
+
+    var title, sub;
+    if (yes >= 4) {
+      title = 'A solid foundation.';
+      sub   = 'Most of the essentials look covered. When priorities shift &mdash; a new goal, a life change, a market moment &mdash; we\'re here for a conversation.';
+    } else if (yes >= 2) {
+      title = 'Good start, with a few gaps.';
+      sub   = 'You\'ve got some of the foundations in place. The check flagged a couple of areas worth reviewing before the next stage.';
+    } else {
+      title = 'There\'s room to build.';
+      sub   = 'Getting the basics right &mdash; protection, liquidity, and consistent investing &mdash; is usually the highest-value thing you can do. A conversation would help map the order.';
+    }
+
+    els.resultTitle.textContent = title;
+    els.resultSub.textContent   = sub;
+
+    els.checklist.innerHTML = '';
+    QUESTIONS.forEach(function (q, i) {
+      var a = state.answers[i] || 'no';
+      var status = a === 'yes' ? 'yes' : (a === 'no' ? 'no' : 'maybe');
+      var info   = a === 'yes' ? q.good : q.gap;
+      var mark   = status === 'yes'
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>'
+        : status === 'no'
+          ? '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>'
+          : '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="6" x2="12" y2="14"/><circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg>';
+      var li = document.createElement('li');
+      li.innerHTML =
+        '<span class="selfcheck__mark selfcheck__mark--' + status + '">' + mark + '</span>' +
+        '<div><strong>' + info.label + '</strong><p>' + info.body + '</p></div>';
+      els.checklist.appendChild(li);
+    });
+
+    els.viewQ.hidden = true;
+    els.viewR.hidden = false;
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'selfcheck_complete', { yes: yes, no: no, maybe: maybe });
+    }
+  }
+
+  function reset() {
+    state = { i: 0, answers: [] };
+    els.viewR.hidden = true;
+    els.viewQ.hidden = false;
+    renderQuestion();
+  }
+
+  root.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-sc-answer]');
+    if (a) {
+      var ans = a.getAttribute('data-sc-answer');
+      state.answers[state.i] = ans;
+      state.i++;
+      if (state.i >= QUESTIONS.length) {
+        els.fill.style.width = '100%';
+        setTimeout(renderResult, 200);
+      } else {
+        renderQuestion();
+      }
+      return;
+    }
+    if (e.target.closest('[data-sc-reset]')) {
+      reset();
+    }
+  });
+
+  renderQuestion();
+})();
+</script>
+
 <!-- JOURNEY / TIMELINE ================================================= -->
 <section class="section section--sky">
   <div class="wrap">
