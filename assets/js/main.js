@@ -49,16 +49,25 @@
     if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) closeModal();
   });
 
-  // ---- Auto-open Calendly popup (once per session, ~7s) -----------------
+  // ---- Auto-open Calendly popup (once every 24h, ~7s) -------------------
+  //
+  // Uses localStorage with a timestamp so:
+  //   - Real visitors see it at most once per day
+  //   - Repeat visits later in the week get it again
+  //   - Testing is easier (waiting a day, or clearing the key, resets it)
   var AUTO_DELAY_MS = 7000;
-  var STORAGE_KEY = 'summ_autopopup_v1';
+  var STORAGE_KEY   = 'summ_autopopup_v2';
+  var COOLDOWN_MS   = 24 * 60 * 60 * 1000; // 24 hours
   var isExcludedPage = /\/legal\//.test(window.location.pathname);
   function tryAutoOpen() {
     if (!modal) return;
-    try { if (sessionStorage.getItem(STORAGE_KEY) === '1') return; } catch (_) {}
+    try {
+      var lastFiredAt = parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10);
+      if (lastFiredAt && (Date.now() - lastFiredAt) < COOLDOWN_MS) return;
+    } catch (_) { /* storage disabled — still fire once */ }
     if (modal.classList.contains('is-open')) return;
     openModal('auto');
-    try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (_) {}
+    try { localStorage.setItem(STORAGE_KEY, String(Date.now())); } catch (_) {}
   }
   if (!isExcludedPage) {
     var scheduled = false;
