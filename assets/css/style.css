@@ -1622,6 +1622,180 @@ a.card:hover { text-decoration: none; color: inherit; }
 .modal__body { flex: 1; overflow: auto; }
 .modal__body iframe { width: 100%; height: 100%; border: 0; display: block; min-height: 720px; }
 
+/* --- "Book with Kuresh" placeholder (shown until Calendly is connected) --- */
+.modal__panel--book { width: min(1040px, 96vw); height: min(720px, 92vh); }
+@media (max-width: 720px) { .modal__panel--book { height: min(88vh, 900px); } }
+
+.book-modal {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  height: 100%;
+  background: var(--white);
+}
+@media (max-width: 720px) { .book-modal { grid-template-columns: 1fr; grid-template-rows: 260px 1fr; } }
+
+.book-modal__photo {
+  position: relative;
+  background: var(--grad-navy);
+  overflow: hidden;
+  isolation: isolate;
+}
+.book-modal__photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  z-index: 1;
+}
+.book-modal__photo-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 2;
+  padding: 1.75rem 1.75rem 1.5rem;
+  color: var(--white);
+  background: linear-gradient(180deg, transparent 0%, rgba(15,36,66,0.55) 45%, rgba(15,36,66,0.92) 100%);
+}
+.book-modal__photo-overlay h3 {
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  margin: 0 0 0.2rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.book-modal__photo-overlay > span {
+  display: block;
+  color: var(--champagne-light);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.book-modal__badges {
+  margin-top: 0.9rem;
+  display: flex; flex-wrap: wrap; gap: 0.35rem;
+}
+.book-modal__badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.32rem 0.65rem;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.82);
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(4px);
+}
+.book-modal__badge svg { width: 12px; height: 12px; stroke: var(--champagne-gold); fill: none; stroke-width: 1.8; }
+
+.book-modal__body {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex; flex-direction: column;
+  overflow: auto;
+}
+.book-modal__eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--champagne-deep);
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+}
+.book-modal__eyebrow svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.book-modal__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  color: var(--ink-navy);
+  margin: 0 0 0.7rem;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.book-modal__title em {
+  font-style: italic;
+  color: transparent;
+  background: var(--grad-text-gold);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: 400;
+  animation: goldShift 8s ease-in-out infinite;
+}
+.book-modal__lead {
+  color: var(--ink-navy-80);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  max-width: 44ch;
+}
+
+.book-modal__actions {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.book-action {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.95rem 1.1rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink-navy);
+  text-decoration: none;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.book-action:hover {
+  transform: translateY(-2px);
+  border-color: rgba(201,176,124,0.55);
+  box-shadow: 0 12px 28px -14px rgba(15,36,66,0.24);
+  text-decoration: none;
+  color: var(--ink-navy);
+}
+.book-action__icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.book-action__icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.book-action__body { display: block; }
+.book-action__body strong { display: block; color: var(--ink-navy); font-size: 0.98rem; font-weight: 600; margin-bottom: 0.15rem; }
+.book-action__body em {
+  display: block;
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+.book-action__cta {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--champagne-deep);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.book-action__cta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+@media (max-width: 480px) {
+  .book-action { grid-template-columns: 44px 1fr; grid-template-rows: auto auto; }
+  .book-action__cta { grid-column: 2 / -1; grid-row: 2; padding-top: 0.15rem; }
+}
+
+.book-modal__note {
+  margin-top: auto;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex; align-items: flex-start; gap: 0.55rem;
+  line-height: 1.55;
+}
+.book-modal__note svg { width: 16px; height: 16px; stroke: var(--champagne-deep); fill: none; stroke-width: 1.8; flex-shrink: 0; margin-top: 2px; }
+
 /* --- Scroll reveal -------------------------------------------------- */
 html.reveal-ready [data-reveal] {
   opacity: 0;
