@@ -45,7 +45,12 @@ include __DIR__ . '/../includes/header.php';
 <section class="section section--white">
   <div class="wrap">
     <article class="team-card mb-4" data-reveal>
-      <div class="team-card__photo" aria-hidden="true">KM</div>
+      <div class="team-card__photo" style="background:var(--grad-navy); padding:0; overflow:hidden;">
+        <img src="../assets/img/team/kuresh-portrait.jpg"
+             alt="Kuresh Morbiwala, Founder and Principal Consultant"
+             style="width:100%; height:100%; object-fit:cover; object-position:center 25%; display:block;"
+             width="960" height="1200" loading="lazy" decoding="async">
+      </div>
       <div class="team-card__body">
         <h3>Kuresh Morbiwala</h3>
         <div class="team-card__role">Founder &amp; Principal Consultant</div>

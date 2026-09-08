@@ -74,11 +74,15 @@ include __DIR__ . '/includes/header.php';
 <section class="section section--sky">
   <div class="wrap">
     <div class="kuresh-feature">
-      <div class="kuresh-portrait" data-reveal aria-hidden="true">
+      <div class="kuresh-portrait kuresh-portrait--photo" data-reveal>
+        <img src="assets/img/team/kuresh-portrait.jpg"
+             alt="Kuresh Morbiwala, Founder and Principal Consultant at Summarise Corporate"
+             class="kuresh-portrait__img"
+             width="960" height="1200" loading="lazy" decoding="async">
         <div class="kuresh-portrait__gold-frame"></div>
-        <div class="kuresh-portrait__placeholder">
-          Kuresh
-          <small>Portrait photograph to follow</small>
+        <div class="kuresh-portrait__caption">
+          Kuresh Morbiwala
+          <span>Founder &amp; Principal Consultant</span>
         </div>
       </div>
       <div class="kuresh-body" data-reveal data-reveal-delay="1">
