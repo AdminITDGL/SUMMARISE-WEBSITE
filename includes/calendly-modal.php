@@ -49,6 +49,22 @@ $__is_placeholder = !CALENDLY_URL
           </p>
 
           <div class="book-modal__actions">
+            <!-- 1. Book an appointment (Calendly). Placeholder for now, wires
+                    to real Calendly the moment CALENDLY_URL is set in config. -->
+            <a class="book-action book-action--appt"
+               href="<?= htmlspecialchars(CALENDLY_URL, ENT_QUOTES) ?>"
+               target="_blank"
+               rel="noopener"
+               data-book-appt>
+              <span class="book-action__icon" style="background:var(--grad-navy); color:var(--champagne-gold);"><?= icon('calendar') ?></span>
+              <span class="book-action__body">
+                <strong>Book an appointment with Kuresh</strong>
+                <em>Pick a 30-minute slot on his calendar</em>
+              </span>
+              <span class="book-action__cta">Open calendar <?= icon('arrow-right') ?></span>
+            </a>
+
+            <!-- 2. WhatsApp: fastest response path. -->
             <a class="book-action book-action--wa"
                href="https://wa.me/<?= BIZ_WHATSAPP ?>?text=<?= urlencode('Hi Kuresh, I would like to book a 30-minute consultation.') ?>"
                target="_blank" rel="noopener">
@@ -62,15 +78,7 @@ $__is_placeholder = !CALENDLY_URL
               <span class="book-action__cta">Open WhatsApp <?= icon('arrow-right') ?></span>
             </a>
 
-            <a class="book-action book-action--call" href="tel:<?= BIZ_PHONE_RAW ?>">
-              <span class="book-action__icon" style="background:var(--sky-wash); color:var(--ink-bright);"><?= icon('phone') ?></span>
-              <span class="book-action__body">
-                <strong>Call Kuresh directly</strong>
-                <em><?= BIZ_PHONE ?> &middot; Mon–Sat, 10am–7pm IST</em>
-              </span>
-              <span class="book-action__cta">Dial <?= icon('arrow-right') ?></span>
-            </a>
-
+            <!-- 3. Email fallback. -->
             <a class="book-action book-action--mail" href="mailto:<?= BIZ_EMAIL ?>?subject=<?= urlencode('Consultation enquiry from summarise.in') ?>">
               <span class="book-action__icon" style="background:var(--pale-gold); color:var(--champagne-deep);"><?= icon('mail') ?></span>
               <span class="book-action__body">
@@ -82,8 +90,8 @@ $__is_placeholder = !CALENDLY_URL
           </div>
 
           <p class="book-modal__note">
-            <?= icon('calendar') ?>
-            Online calendar booking is coming shortly. In the meantime, WhatsApp is the fastest way to a real reply.
+            <?= icon('phone') ?>
+            Prefer to call? Dial <a href="tel:<?= BIZ_PHONE_RAW ?>" style="color:var(--ink-navy); font-weight:500;"><?= BIZ_PHONE ?></a> &middot; Mon–Sat, 10am–7pm IST.
           </p>
         </section>
       </div>

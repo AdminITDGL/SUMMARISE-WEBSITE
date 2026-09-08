@@ -1756,6 +1756,17 @@ a.card:hover { text-decoration: none; color: inherit; }
   text-decoration: none;
   color: var(--ink-navy);
 }
+/* Primary action — Book an appointment (Calendly) stands out visually. */
+.book-action--appt {
+  background: linear-gradient(135deg, rgba(201,176,124,0.10) 0%, rgba(28,79,139,0.06) 100%);
+  border-color: rgba(201,176,124,0.42);
+}
+.book-action--appt:hover {
+  border-color: var(--champagne-gold);
+  box-shadow: 0 16px 36px -14px rgba(201,176,124,0.42);
+}
+.book-action--appt .book-action__icon svg { stroke-width: 1.8; }
+.book-action--appt .book-action__cta { color: var(--ink-navy); }
 .book-action__icon {
   width: 48px; height: 48px;
   border-radius: 12px;
