@@ -153,6 +153,12 @@ if (!empty($page['json_ld']) && is_array($page['json_ld'])) {
 <?php $__cssVer = @filemtime(__DIR__ . '/../assets/css/style.css') ?: time(); ?>
 <link rel="stylesheet" href="<?= $__root ?>assets/css/style.css?v=<?= $__cssVer ?>">
 
+<!-- Calendly widget assets — used by the "Book an appointment" action in the
+     modal to open Calendly's official popup. Loaded async so it never blocks
+     page paint. -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
 <!-- Google Search Console verification (fill in constant when available) -->
 <?php if (GSC_VERIFICATION_CODE): ?>
 <meta name="google-site-verification" content="<?= htmlspecialchars(GSC_VERIFICATION_CODE, ENT_QUOTES, 'UTF-8') ?>">

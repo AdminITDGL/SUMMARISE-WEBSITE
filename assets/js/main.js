@@ -23,8 +23,37 @@
   var iframe = modal ? modal.querySelector('iframe') : null;
   var iframeSrc = iframe ? iframe.getAttribute('data-src') : null;
 
+  // Calendly URL read from a link inside the modal so PHP config stays the
+  // single source of truth. Falls back to the placeholder if not present.
+  var CALENDLY_URL = (modal && modal.querySelector('[data-book-appt]'))
+    ? modal.querySelector('[data-book-appt]').getAttribute('href')
+    : 'https://calendly.com/connect-summarise/30min';
+
+  function openCalendlyPopup() {
+    if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+      return true;
+    }
+    return false;
+  }
+
   function openModal(source) {
     if (!modal) return;
+
+    // For manual button clicks: open Calendly's official popup widget
+    // directly (fastest booking path). If Calendly hasn't loaded yet, fall
+    // through to the branded "Speak with Kuresh" modal.
+    if (source === 'cta' && openCalendlyPopup()) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'book_consultation_open', {
+          location: window.location.pathname, source: 'calendly_popup'
+        });
+      }
+      return;
+    }
+
+    // Auto-popup and JS-error fallback: show the branded modal that
+    // introduces Kuresh with portrait + 3 booking channels.
     if (iframe && iframeSrc && !iframe.getAttribute('src')) iframe.setAttribute('src', iframeSrc);
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');

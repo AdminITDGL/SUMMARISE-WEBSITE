@@ -23,8 +23,10 @@ if (!defined('BIZ_FOUNDER'))      define('BIZ_FOUNDER',      'Kuresh Morbiwala')
 if (!defined('BIZ_PHONE'))     define('BIZ_PHONE',     '+91 98920 38451');
 if (!defined('BIZ_PHONE_RAW')) define('BIZ_PHONE_RAW', '+919892038451'); // tel: link
 if (!defined('BIZ_WHATSAPP'))  define('BIZ_WHATSAPP',  '919892038451');  // wa.me link
-if (!defined('BIZ_EMAIL'))     define('BIZ_EMAIL',     'kuresh@summarise.in');
-if (!defined('BIZ_EMAIL_OPS')) define('BIZ_EMAIL_OPS', 'cverma@summarise.in');
+if (!defined('BIZ_EMAIL'))         define('BIZ_EMAIL',         'kuresh@summarise.in'); // Kuresh — kept for the About/Team page and personal correspondence
+if (!defined('BIZ_EMAIL_CONNECT')) define('BIZ_EMAIL_CONNECT', 'connect@summarise.in'); // Booking / consultation enquiries — primary public inbox
+if (!defined('BIZ_EMAIL_CARE'))    define('BIZ_EMAIL_CARE',    'care@summarise.in');    // Customer support / existing clients
+if (!defined('BIZ_EMAIL_OPS'))     define('BIZ_EMAIL_OPS',     'cverma@summarise.in'); // Chandrashekhar — operations
 
 if (!defined('BIZ_ADDR_LINE1')) define('BIZ_ADDR_LINE1', '322, Tulsiani Chambers');
 if (!defined('BIZ_ADDR_LINE2')) define('BIZ_ADDR_LINE2', '212, Free Press Journal Marg');
@@ -42,11 +44,11 @@ if (!defined('AMFI_ARN'))          define('AMFI_ARN',          'ARN-78740');
 if (!defined('IRDAI_AGENCY_CODE')) define('IRDAI_AGENCY_CODE', '00413837');
 
 // --- Booking / Calendly ---------------------------------------------------
-//
-// PLACEHOLDER — swap this to the real Calendly URL once the client provides it.
+// Real Calendly link supplied by the client (2026-09-24).
 // Every "Book a Consultation" CTA and the site-wide modal reads from this
-// constant, so this is a one-line change site-wide.
-if (!defined('CALENDLY_URL')) define('CALENDLY_URL', 'https://calendly.com/summarise-corporate/consultation');
+// constant, and the modal's "Book an appointment" action fires the Calendly
+// popup widget with this URL.
+if (!defined('CALENDLY_URL')) define('CALENDLY_URL', 'https://calendly.com/connect-summarise/30min');
 
 // --- Feature flags --------------------------------------------------------
 //

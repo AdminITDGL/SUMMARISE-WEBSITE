@@ -49,13 +49,15 @@ $__is_placeholder = !CALENDLY_URL
           </p>
 
           <div class="book-modal__actions">
-            <!-- 1. Book an appointment (Calendly). Placeholder for now, wires
-                    to real Calendly the moment CALENDLY_URL is set in config. -->
+            <!-- 1. Book an appointment — fires the Calendly popup widget.
+                    Falls back to opening the Calendly URL in a new tab if
+                    Calendly's script hasn't loaded yet (very slow connection). -->
             <a class="book-action book-action--appt"
                href="<?= htmlspecialchars(CALENDLY_URL, ENT_QUOTES) ?>"
                target="_blank"
                rel="noopener"
-               data-book-appt>
+               data-book-appt
+               onclick="if(window.Calendly){document.querySelector('[data-modal=&quot;calendly&quot;]').classList.remove('is-open');document.body.style.overflow='';Calendly.initPopupWidget({url:this.href});return false;}">
               <span class="book-action__icon" style="background:var(--grad-navy); color:var(--champagne-gold);"><?= icon('calendar') ?></span>
               <span class="book-action__body">
                 <strong>Book an appointment with Kuresh</strong>
@@ -78,12 +80,12 @@ $__is_placeholder = !CALENDLY_URL
               <span class="book-action__cta">Open WhatsApp <?= icon('arrow-right') ?></span>
             </a>
 
-            <!-- 3. Email fallback. -->
-            <a class="book-action book-action--mail" href="mailto:<?= BIZ_EMAIL ?>?subject=<?= urlencode('Consultation enquiry from summarise.in') ?>">
+            <!-- 3. Email — goes to the dedicated consultation inbox. -->
+            <a class="book-action book-action--mail" href="mailto:<?= BIZ_EMAIL_CONNECT ?>?subject=<?= urlencode('Consultation enquiry from summarise.in') ?>">
               <span class="book-action__icon" style="background:var(--pale-gold); color:var(--champagne-deep);"><?= icon('mail') ?></span>
               <span class="book-action__body">
-                <strong>Email Kuresh</strong>
-                <em><?= BIZ_EMAIL ?></em>
+                <strong>Email to book</strong>
+                <em><?= BIZ_EMAIL_CONNECT ?></em>
               </span>
               <span class="book-action__cta">Compose <?= icon('arrow-right') ?></span>
             </a>

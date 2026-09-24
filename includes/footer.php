@@ -62,10 +62,15 @@ $__root = site_root();
         <span class="footer-contact-line">
           <a href="tel:<?= BIZ_PHONE_RAW ?>"><?= htmlspecialchars(BIZ_PHONE, ENT_QUOTES) ?></a>
         </span>
-        <span class="footer-contact-line">
-          <a href="mailto:<?= BIZ_EMAIL ?>"><?= BIZ_EMAIL ?></a>
+        <span class="footer-contact-line" style="margin-top:0.65rem;">
+          <strong style="color:rgba(255,255,255,0.85); font-weight:500; display:block; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.2rem;">Book a consultation</strong>
+          <a href="mailto:<?= BIZ_EMAIL_CONNECT ?>"><?= BIZ_EMAIL_CONNECT ?></a>
         </span>
         <span class="footer-contact-line">
+          <strong style="color:rgba(255,255,255,0.85); font-weight:500; display:block; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.2rem;">Customer support</strong>
+          <a href="mailto:<?= BIZ_EMAIL_CARE ?>"><?= BIZ_EMAIL_CARE ?></a>
+        </span>
+        <span class="footer-contact-line" style="margin-top:0.65rem;">
           <a href="https://wa.me/<?= BIZ_WHATSAPP ?>" target="_blank" rel="noopener">WhatsApp us</a>
         </span>
       </div>
@@ -96,10 +101,10 @@ $__root = site_root();
 
 <!-- Sticky action stack — always visible: Book a Meeting + WhatsApp -->
 <div class="sticky-actions" aria-label="Quick actions">
-  <button type="button" class="sticky-btn sticky-btn--book" data-modal-open="calendly" aria-label="Book a meeting">
+  <a class="sticky-btn sticky-btn--book" href="<?= htmlspecialchars(CALENDLY_URL, ENT_QUOTES) ?>" data-modal-open="calendly" target="_blank" rel="noopener" aria-label="Book a meeting">
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
     <span>Book a Meeting</span>
-  </button>
+  </a>
   <a class="sticky-btn sticky-btn--wa" href="https://wa.me/<?= BIZ_WHATSAPP ?>?text=<?= urlencode('Hi Summarise Corporate, I would like to book a consultation.') ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.4c0 2.5.7 4.9 2 7L3 29l6.9-2.4c2 .9 4 1.3 6.2 1.3h.1c7 0 12.5-5.5 12.5-12.4C28.7 8.5 23 3 16 3zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.1 1.4 1.4-4-.3-.4c-1-1.6-1.5-3.5-1.5-5.4 0-5.6 4.6-10.1 10.2-10.1s10.2 4.5 10.2 10.1c0 5.6-4.6 10-10.2 10zm5.8-7.5c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2c-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5H12c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2-1.5.2-.7.2-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
   </a>
