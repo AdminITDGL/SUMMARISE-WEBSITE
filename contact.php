@@ -63,27 +63,121 @@ include __DIR__ . '/includes/header.php';
 
         <div class="mt-4">
           <h3>Or send us a message</h3>
-          <form method="post" action="#" onsubmit="event.preventDefault(); alert('Form handler goes live once we wire the mail backend. For now, please use WhatsApp or the calendar.');">
+
+          <!--
+            Contact form → emails connect@summarise.in via FormSubmit.co.
+            First submission triggers a one-time activation email that must be
+            opened + confirmed once. After that, every future submission is
+            delivered instantly with no signup required. Once we're on the
+            client's own PHP server, this fetch endpoint can be swapped for
+            a native contact-submit.php that uses mail() or SMTP.
+          -->
+          <form id="contact-form" data-contact-form novalidate>
+            <input type="hidden" name="_subject"    value="New contact enquiry from summarise.in">
+            <input type="hidden" name="_captcha"    value="false">
+            <input type="hidden" name="_template"   value="table">
+            <input type="hidden" name="Source"      value="Contact page">
+            <!-- Honeypot — bots fill this, humans don't (it's visually hidden) -->
+            <input type="text"   name="_honey"      style="display:none" tabindex="-1" autocomplete="off">
+
             <div class="form-field">
               <label for="cf-name">Your name</label>
-              <input type="text" id="cf-name" name="name" required autocomplete="name">
+              <input type="text" id="cf-name" name="Name" required autocomplete="name">
             </div>
             <div class="form-field">
               <label for="cf-email">Email</label>
-              <input type="email" id="cf-email" name="email" required autocomplete="email">
+              <input type="email" id="cf-email" name="Email" required autocomplete="email">
             </div>
             <div class="form-field">
               <label for="cf-phone">Phone (optional)</label>
-              <input type="tel" id="cf-phone" name="phone" autocomplete="tel">
+              <input type="tel" id="cf-phone" name="Phone" autocomplete="tel">
+            </div>
+            <div class="form-field">
+              <label for="cf-topic">What is this about?</label>
+              <select id="cf-topic" name="Topic">
+                <option value="Book a consultation">Book a consultation</option>
+                <option value="Mutual fund distribution">Mutual fund distribution</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Integrated financial perspective">Integrated financial perspective</option>
+                <option value="Business owner solutions">Business owner solutions</option>
+                <option value="Careers">Careers</option>
+                <option value="Something else">Something else</option>
+              </select>
             </div>
             <div class="form-field">
               <label for="cf-msg">How can we help?</label>
-              <textarea id="cf-msg" name="message" rows="5" required></textarea>
+              <textarea id="cf-msg" name="Message" rows="5" required></textarea>
             </div>
-            <p class="form-note">By submitting, you agree to be contacted about your enquiry. See our <a href="legal/privacy-policy.php">privacy policy</a>.</p>
-            <button type="submit" class="btn btn-primary">Send message</button>
+
+            <p class="form-note">By submitting, you agree to be contacted about your enquiry. Summarise Corporate does not sell or share your data. See our <a href="legal/privacy-policy.php">privacy policy</a>.</p>
+
+            <button type="submit" class="btn btn-primary" data-contact-submit>
+              <?= icon('mail') ?> Send message
+            </button>
+
+            <div data-contact-error hidden style="margin-top:1rem; padding:1rem 1.15rem; background:#fbeadb; border:1px solid #c98b4d; border-radius:var(--radius); color:#8f4b1e; font-size:0.9rem;"></div>
           </form>
+
+          <div data-contact-success hidden style="margin-top:1rem; padding:1.75rem; background:#e5f6ed; border:1px solid #2f9e6b; border-radius:var(--radius-lg); color:#16794c;">
+            <h3 style="margin:0 0 0.5rem; color:#16794c;">Thanks — message received.</h3>
+            <p style="margin:0 0 0.75rem; color:#3d6a52;">Kuresh will get back to you within one business day at the email you provided. If you'd like to speak sooner, WhatsApp is the fastest way through.</p>
+            <p style="margin:0;">
+              <a class="btn btn-secondary btn-sm" href="https://wa.me/<?= BIZ_WHATSAPP ?>" target="_blank" rel="noopener">
+                <?= icon('chat') ?> WhatsApp us
+              </a>
+            </p>
+          </div>
         </div>
+
+        <script>
+        /* Wire contact form submission to FormSubmit → connect@summarise.in */
+        (function () {
+          var form = document.querySelector('[data-contact-form]');
+          if (!form) return;
+          var submit  = form.querySelector('[data-contact-submit]');
+          var errorEl = document.querySelector('[data-contact-error]');
+          var successEl = document.querySelector('[data-contact-success]');
+          var ENDPOINT = 'https://formsubmit.co/ajax/<?= BIZ_EMAIL_CONNECT ?>';
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            errorEl.hidden = true;
+
+            // Honeypot check — silently drop bots
+            if (form.querySelector('[name="_honey"]').value) {
+              successEl.hidden = false; form.hidden = true;
+              return;
+            }
+
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+
+            submit.setAttribute('disabled', 'true');
+            var originalHTML = submit.innerHTML;
+            submit.innerHTML = 'Sending…';
+
+            var fd = new FormData(form);
+            fetch(ENDPOINT, {
+              method: 'POST',
+              body: fd,
+              headers: { 'Accept': 'application/json' }
+            }).then(function (r) {
+              return r.ok ? r.json() : Promise.reject(r);
+            }).then(function () {
+              form.hidden = true;
+              successEl.hidden = false;
+              successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              if (typeof window.gtag === 'function') {
+                window.gtag('event', 'contact_submit', { topic: fd.get('Topic') || 'unknown' });
+              }
+            }).catch(function () {
+              submit.removeAttribute('disabled');
+              submit.innerHTML = originalHTML;
+              errorEl.textContent = 'Sorry — something went wrong sending your message. Please try WhatsApp or email connect@summarise.in directly.';
+              errorEl.hidden = false;
+            });
+          });
+        })();
+        </script>
       </div>
     </div>
   </div>
