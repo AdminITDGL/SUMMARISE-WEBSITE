@@ -114,29 +114,110 @@ Once `https://www.summarise.in` is live:
 
 ---
 
-## Subsequent deploys (updating the site)
+## Subsequent deploys — automated via GitHub Actions
+
+Once **Enable push-to-deploy** below is done once, every subsequent
+change lands like this:
+
+1. Someone (or Claude) pushes to `main` on the repo
+2. GitHub Actions runs `.github/workflows/deploy.yml`
+3. The workflow SSHs into the droplet as `deploy`, runs
+   `git pull` and `bash deploy/deploy.sh`
+4. `deploy.sh` re-syncs the nginx config if it changed, runs
+   `nginx -t`, and reloads nginx if the test passed
+5. Site is live within ~15 seconds of the push
+
+Manual deploy is still possible for hotfixes:
 
 ```bash
 ssh deploy@159.65.154.129
 cd /home/deploy/static-sites/SUMMARISE-WEBSITE
 git pull origin main
-# No build step needed — PHP is served directly.
-# If you changed the nginx config, also copy it into place and reload:
-sudo cp deploy/nginx/summarise.in.conf /etc/nginx/sites-available/SUMMARISE-WEBSITE
-sudo nginx -t && sudo systemctl reload nginx
+bash deploy/deploy.sh
 ```
-
-That's it. No compile, no bundler, no restart-fpm needed unless you
-change PHP config.
 
 ---
 
-## Optional: automate the "git pull" as a webhook
+## Enable push-to-deploy (one time)
 
-Once you're used to the manual flow, wire a small PHP endpoint on the
-droplet that runs `git pull` when GitHub POSTs a push webhook to it.
-Ask if you want that added — it's ~30 lines of PHP + a GitHub webhook
-secret.
+The GitHub Actions workflow at `.github/workflows/deploy.yml` needs
+four repository secrets and a corresponding SSH public key on the
+droplet.
+
+### Generate a dedicated SSH key pair for GitHub
+
+On any machine you trust — **not** on the droplet, not on a laptop you
+share:
+
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/summarise_gh_deploy -C "github-actions@summarise" -N ""
+```
+
+This creates two files:
+- `~/.ssh/summarise_gh_deploy`      — private key (stays with the pair,
+                                       goes into a GitHub secret)
+- `~/.ssh/summarise_gh_deploy.pub`  — public key (goes on the droplet)
+
+### Put the public key on the droplet
+
+```bash
+ssh deploy@159.65.154.129 "mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+scp ~/.ssh/summarise_gh_deploy.pub deploy@159.65.154.129:~/gh_key.pub
+ssh deploy@159.65.154.129 "cat ~/gh_key.pub >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && rm ~/gh_key.pub"
+```
+
+### Grant `deploy` passwordless sudo for the two commands the script uses
+
+Because `deploy.sh` runs `sudo cp` and `sudo systemctl reload nginx`,
+the deploy user needs NOPASSWD sudo for those specific commands.
+
+```bash
+ssh deploy@159.65.154.129
+sudo visudo -f /etc/sudoers.d/deploy-summarise
+```
+
+Paste this exact content:
+
+```
+deploy ALL=(root) NOPASSWD: /bin/cp, /bin/ln, /usr/sbin/nginx, /bin/systemctl reload nginx, /usr/bin/chown, /usr/bin/find, /usr/bin/chmod
+```
+
+Save (Ctrl+X → Y → Enter) and exit. Quick sanity check:
+
+```bash
+sudo -n /usr/sbin/nginx -t
+# → should print "syntax is ok" WITHOUT prompting for a password
+```
+
+### Add the four secrets to GitHub
+
+Open [github.com/AdminITDGL/SUMMARISE-WEBSITE/settings/secrets/actions](https://github.com/AdminITDGL/SUMMARISE-WEBSITE/settings/secrets/actions)
+→ **New repository secret** for each:
+
+| Name              | Value                                                    |
+|-------------------|----------------------------------------------------------|
+| `SSH_HOST`        | `159.65.154.129`                                         |
+| `SSH_USER`        | `deploy`                                                 |
+| `SSH_PORT`        | `22`                                                     |
+| `SSH_PRIVATE_KEY` | The full content of `~/.ssh/summarise_gh_deploy` (private key) — paste all lines including `-----BEGIN OPENSSH PRIVATE KEY-----` and `-----END OPENSSH PRIVATE KEY-----` |
+
+### First test
+
+Trigger a manual run from
+[github.com/AdminITDGL/SUMMARISE-WEBSITE/actions/workflows/deploy.yml](https://github.com/AdminITDGL/SUMMARISE-WEBSITE/actions/workflows/deploy.yml)
+→ **Run workflow** → **main** → **Run workflow**. Watch the log — you
+want to see:
+
+```
+▸ Pulling latest…
+▸ HEAD is now <sha>
+▸ Running deploy script…
+✓ nginx reloaded  (or: ▸ nginx config unchanged)
+✓ deploy.sh finished
+✓ Deploy complete
+```
+
+From that point on, every `git push` to `main` deploys automatically.
 
 ---
 

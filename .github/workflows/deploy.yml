@@ -1,0 +1,54 @@
+# -----------------------------------------------------------------------------
+# Push-to-deploy for www.summarise.in
+# -----------------------------------------------------------------------------
+# Runs on every push to `main`. SSHs into the DigitalOcean droplet as the
+# `deploy` user, git-pulls the latest code, and re-syncs the nginx config
+# if `deploy/nginx/summarise.in.conf` changed.
+#
+# Requires four GitHub secrets on this repo:
+#   SSH_HOST         159.65.154.129
+#   SSH_USER         deploy
+#   SSH_PORT         22
+#   SSH_PRIVATE_KEY  full private key text (openssh format, ed25519 preferred)
+#                    matching public key MUST be in the deploy user's
+#                    ~/.ssh/authorized_keys on the droplet.
+#
+# Setup one time — see deploy/DEPLOY.md § "Enable push-to-deploy".
+# -----------------------------------------------------------------------------
+
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  # Manual trigger from the Actions tab — handy for reverting a bad deploy.
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-summarise
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Push to droplet
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH → git pull + reload
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host:     ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port:     ${{ secrets.SSH_PORT }}
+          key:      ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true   # abort on the first error, don't half-deploy
+          command_timeout: 5m
+          script: |
+            set -e
+            cd /home/deploy/static-sites/SUMMARISE-WEBSITE
+            echo "▸ Pulling latest…"
+            git fetch --prune origin
+            git reset --hard origin/main
+            echo "▸ HEAD is now $(git rev-parse --short HEAD)"
+            echo "▸ Running deploy script…"
+            bash deploy/deploy.sh
+            echo "✓ Deploy complete"
