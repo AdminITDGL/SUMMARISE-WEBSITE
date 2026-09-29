@@ -93,7 +93,7 @@ $__is_placeholder = !CALENDLY_URL
 
           <p class="book-modal__note">
             <?= icon('phone') ?>
-            Prefer to call? Dial <a href="tel:<?= BIZ_PHONE_RAW ?>" style="color:var(--ink-navy); font-weight:500;"><?= BIZ_PHONE ?></a> &middot; Mon–Sat, 10am–7pm IST.
+            Prefer to call? <strong>Consultations:</strong> <a href="tel:<?= BIZ_PHONE_CONSULT_RAW ?>" style="color:var(--ink-navy); font-weight:500;"><?= BIZ_PHONE_CONSULT ?></a>&nbsp; &middot; &nbsp;<strong>Support:</strong> <a href="tel:<?= BIZ_PHONE_CARE_RAW ?>" style="color:var(--ink-navy); font-weight:500;"><?= BIZ_PHONE_CARE ?></a>
           </p>
         </section>
       </div>

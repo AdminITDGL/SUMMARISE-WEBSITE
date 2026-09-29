@@ -65,7 +65,7 @@ include __DIR__ . '/../includes/header.php';
         <p class="mt-3 mb-0">
           <a href="mailto:kuresh@summarise.in"><?= icon_inline('mail') ?> kuresh@summarise.in</a>
           &nbsp;&middot;&nbsp;
-          <a href="tel:<?= BIZ_PHONE_RAW ?>"><?= icon_inline('phone') ?> <?= BIZ_PHONE ?></a>
+          <a href="tel:<?= BIZ_PHONE_CONSULT_RAW ?>"><?= icon_inline('phone') ?> <?= BIZ_PHONE_CONSULT ?></a>
         </p>
       </div>
     </article>

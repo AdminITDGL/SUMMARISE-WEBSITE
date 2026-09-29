@@ -20,9 +20,30 @@ if (!defined('BIZ_FOUNDED'))      define('BIZ_FOUNDED',      '2003');
 if (!defined('BIZ_FOUNDER'))      define('BIZ_FOUNDER',      'Kuresh Morbiwala');
 
 // --- Contact --------------------------------------------------------------
-if (!defined('BIZ_PHONE'))     define('BIZ_PHONE',     '+91 98920 38451');
-if (!defined('BIZ_PHONE_RAW')) define('BIZ_PHONE_RAW', '+919892038451'); // tel: link
-if (!defined('BIZ_WHATSAPP'))  define('BIZ_WHATSAPP',  '919892038451');  // wa.me link
+// --- Public business phone numbers ----------------------------------------
+// Two dedicated lines with clear purposes (per client, 2026-09-29):
+//   BIZ_PHONE_CONSULT  9702090005 → consultation booking
+//   BIZ_PHONE_CARE     9702090006 → service-related queries / customer support
+// BIZ_PHONE/BIZ_WHATSAPP alias the consultation number for backward
+// compatibility with the many CTAs, footer, schema and modal that use
+// BIZ_PHONE by name.
+if (!defined('BIZ_PHONE_CONSULT'))     define('BIZ_PHONE_CONSULT',     '+91 97020 90005');
+if (!defined('BIZ_PHONE_CONSULT_RAW')) define('BIZ_PHONE_CONSULT_RAW', '+919702090005');
+if (!defined('BIZ_WHATSAPP_CONSULT'))  define('BIZ_WHATSAPP_CONSULT',  '919702090005');
+
+if (!defined('BIZ_PHONE_CARE'))        define('BIZ_PHONE_CARE',        '+91 97020 90006');
+if (!defined('BIZ_PHONE_CARE_RAW'))    define('BIZ_PHONE_CARE_RAW',    '+919702090006');
+if (!defined('BIZ_WHATSAPP_CARE'))     define('BIZ_WHATSAPP_CARE',     '919702090006');
+
+// Primary business number — used by all generic phone/WhatsApp CTAs.
+// Set to consultation number since most public-facing CTAs are booking-related.
+if (!defined('BIZ_PHONE'))     define('BIZ_PHONE',     BIZ_PHONE_CONSULT);
+if (!defined('BIZ_PHONE_RAW')) define('BIZ_PHONE_RAW', BIZ_PHONE_CONSULT_RAW);
+if (!defined('BIZ_WHATSAPP'))  define('BIZ_WHATSAPP',  BIZ_WHATSAPP_CONSULT);
+
+// (Kuresh's personal mobile 98920 38451 removed from all public CTAs
+//  per client instruction 2026-09-29 — the two dedicated business lines
+//  above cover consultation booking and support respectively.)
 if (!defined('BIZ_EMAIL'))         define('BIZ_EMAIL',         'kuresh@summarise.in'); // Kuresh — kept for the About/Team page and personal correspondence
 if (!defined('BIZ_EMAIL_CONNECT')) define('BIZ_EMAIL_CONNECT', 'connect@summarise.in'); // Booking / consultation enquiries — primary public inbox
 if (!defined('BIZ_EMAIL_CARE'))    define('BIZ_EMAIL_CARE',    'care@summarise.in');    // Customer support / existing clients

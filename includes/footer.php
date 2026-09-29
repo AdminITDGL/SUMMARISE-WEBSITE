@@ -59,18 +59,17 @@ $__root = site_root();
           <?= htmlspecialchars(BIZ_ADDR_LINE2, ENT_QUOTES) ?>,<br>
           <?= htmlspecialchars(BIZ_ADDR_AREA, ENT_QUOTES) ?>, <?= htmlspecialchars(BIZ_ADDR_CITY, ENT_QUOTES) ?> &ndash; <?= BIZ_ADDR_PIN ?>
         </span>
-        <span class="footer-contact-line">
-          <a href="tel:<?= BIZ_PHONE_RAW ?>"><?= htmlspecialchars(BIZ_PHONE, ENT_QUOTES) ?></a>
+        <span class="footer-contact-line" style="margin-top:0.85rem;">
+          <strong style="color:var(--champagne-light); font-weight:500; display:block; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:0.3rem;">Consultation booking</strong>
+          <a href="tel:<?= BIZ_PHONE_CONSULT_RAW ?>" style="display:block;"><?= BIZ_PHONE_CONSULT ?></a>
+          <a href="mailto:<?= BIZ_EMAIL_CONNECT ?>" style="display:block;"><?= BIZ_EMAIL_CONNECT ?></a>
         </span>
-        <span class="footer-contact-line" style="margin-top:0.65rem;">
-          <strong style="color:rgba(255,255,255,0.85); font-weight:500; display:block; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.2rem;">Book a consultation</strong>
-          <a href="mailto:<?= BIZ_EMAIL_CONNECT ?>"><?= BIZ_EMAIL_CONNECT ?></a>
+        <span class="footer-contact-line" style="margin-top:0.85rem;">
+          <strong style="color:var(--champagne-light); font-weight:500; display:block; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:0.3rem;">Service &amp; support</strong>
+          <a href="tel:<?= BIZ_PHONE_CARE_RAW ?>" style="display:block;"><?= BIZ_PHONE_CARE ?></a>
+          <a href="mailto:<?= BIZ_EMAIL_CARE ?>" style="display:block;"><?= BIZ_EMAIL_CARE ?></a>
         </span>
-        <span class="footer-contact-line">
-          <strong style="color:rgba(255,255,255,0.85); font-weight:500; display:block; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.2rem;">Customer support</strong>
-          <a href="mailto:<?= BIZ_EMAIL_CARE ?>"><?= BIZ_EMAIL_CARE ?></a>
-        </span>
-        <span class="footer-contact-line" style="margin-top:0.65rem;">
+        <span class="footer-contact-line" style="margin-top:0.85rem;">
           <a href="https://wa.me/<?= BIZ_WHATSAPP ?>" target="_blank" rel="noopener">WhatsApp us</a>
         </span>
       </div>

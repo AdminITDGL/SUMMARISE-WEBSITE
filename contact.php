@@ -44,9 +44,14 @@ include __DIR__ . '/includes/header.php';
 
         <div class="card">
           <h3 style="margin-top:0;">Call or email</h3>
-          <p class="mb-1"><strong>Phone:</strong> <a href="tel:<?= BIZ_PHONE_RAW ?>"><?= BIZ_PHONE ?></a></p>
-          <p class="mb-1"><strong>Email:</strong> <a href="mailto:<?= BIZ_EMAIL ?>"><?= BIZ_EMAIL ?></a></p>
-          <p class="mb-0"><strong>Operations:</strong> <a href="mailto:<?= BIZ_EMAIL_OPS ?>"><?= BIZ_EMAIL_OPS ?></a></p>
+
+          <p class="small muted mb-1" style="text-transform:uppercase; letter-spacing:0.12em; font-size:0.72rem; color:var(--champagne-deep); font-weight:500; margin-top:0.35rem;">Consultation booking</p>
+          <p class="mb-1"><?= icon_inline('phone') ?> <a href="tel:<?= BIZ_PHONE_CONSULT_RAW ?>"><?= BIZ_PHONE_CONSULT ?></a></p>
+          <p class="mb-3"><?= icon_inline('mail') ?> <a href="mailto:<?= BIZ_EMAIL_CONNECT ?>"><?= BIZ_EMAIL_CONNECT ?></a></p>
+
+          <p class="small muted mb-1" style="text-transform:uppercase; letter-spacing:0.12em; font-size:0.72rem; color:var(--champagne-deep); font-weight:500;">Service &amp; support</p>
+          <p class="mb-1"><?= icon_inline('phone') ?> <a href="tel:<?= BIZ_PHONE_CARE_RAW ?>"><?= BIZ_PHONE_CARE ?></a></p>
+          <p class="mb-0"><?= icon_inline('mail') ?> <a href="mailto:<?= BIZ_EMAIL_CARE ?>"><?= BIZ_EMAIL_CARE ?></a></p>
         </div>
       </div>
 
