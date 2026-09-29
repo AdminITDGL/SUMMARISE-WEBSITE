@@ -179,8 +179,14 @@ sudo visudo -f /etc/sudoers.d/deploy-summarise
 Paste this exact content:
 
 ```
-deploy ALL=(root) NOPASSWD: /bin/cp, /bin/ln, /usr/sbin/nginx, /bin/systemctl reload nginx, /usr/bin/chown, /usr/bin/find, /usr/bin/chmod
+deploy ALL=(root) NOPASSWD: /bin/cp, /bin/ln, /bin/chown, /bin/chmod, /usr/bin/find, /bin/systemctl reload nginx, /usr/sbin/nginx -t, /usr/sbin/nginx
 ```
+
+Paths above are correct for **Ubuntu 18.04 / 20.04** (`chown`, `chmod` etc.
+in `/bin`). On **Ubuntu 22.04+** with usrmerge, both `/bin/foo` and
+`/usr/bin/foo` resolve to the same binary. If your droplet's `which chown`
+shows a different path, update the sudoers line accordingly and re-run
+`sudo visudo -c -f /etc/sudoers.d/deploy-summarise`.
 
 Save (Ctrl+X → Y → Enter) and exit. Quick sanity check:
 
