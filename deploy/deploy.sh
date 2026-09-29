@@ -34,14 +34,19 @@ if [ -f "${NGINX_SRC}" ]; then
       sudo ln -sf "${NGINX_DST}" /etc/nginx/sites-enabled/SUMMARISE-WEBSITE
     fi
 
-    # Syntax check before reload — abort with a clear error if it's broken
+    # Syntax check before reload — abort with a clear error if it's broken.
+    # Because we already copied the new file into place, restore the previous
+    # one from git HEAD~1 on failure so nginx isn't left with a broken file
+    # on disk (it would fail to start on next boot).
     if sudo nginx -t 2>&1; then
       sudo systemctl reload nginx
       echo "  ✓ nginx reloaded"
     else
-      echo "  ✗ nginx config test FAILED — reverting"
-      # Roll back: if there's a .bak from a previous known-good, restore.
-      # Otherwise leave nginx running on the old config in memory.
+      echo "  ✗ nginx config test FAILED — reverting to previous known-good"
+      git show HEAD~1:deploy/nginx/summarise.in.conf > /tmp/nginx-prev.conf 2>/dev/null \
+        && sudo cp /tmp/nginx-prev.conf "${NGINX_DST}" \
+        && rm /tmp/nginx-prev.conf \
+        && echo "  ▸ reverted; nginx keeps running on previous in-memory config"
       exit 1
     fi
   else
