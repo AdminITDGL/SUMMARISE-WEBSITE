@@ -104,6 +104,10 @@ $__root = site_root();
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
     <span>Book a Meeting</span>
   </a>
+  <a class="sticky-btn sticky-btn--portal" href="<?= htmlspecialchars(CLIENT_PORTAL_URL, ENT_QUOTES) ?>" target="_blank" rel="noopener" aria-label="Client login — WealthMagic portal">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <span>Client Login</span>
+  </a>
   <a class="sticky-btn sticky-btn--wa" href="https://wa.me/<?= BIZ_WHATSAPP ?>?text=<?= urlencode('Hi Summarise Corporate, I would like to book a consultation.') ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.4c0 2.5.7 4.9 2 7L3 29l6.9-2.4c2 .9 4 1.3 6.2 1.3h.1c7 0 12.5-5.5 12.5-12.4C28.7 8.5 23 3 16 3zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.1 1.4 1.4-4-.3-.4c-1-1.6-1.5-3.5-1.5-5.4 0-5.6 4.6-10.1 10.2-10.1s10.2 4.5 10.2 10.1c0 5.6-4.6 10-10.2 10zm5.8-7.5c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2c-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5H12c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2-1.5.2-.7.2-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
   </a>

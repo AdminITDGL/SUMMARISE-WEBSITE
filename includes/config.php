@@ -71,6 +71,11 @@ if (!defined('IRDAI_AGENCY_CODE')) define('IRDAI_AGENCY_CODE', '00413837');
 // popup widget with this URL.
 if (!defined('CALENDLY_URL')) define('CALENDLY_URL', 'https://calendly.com/connect-summarise/30min');
 
+// --- Client Portal (WealthMagic / FintsoWM) --------------------------------
+// The login URL for existing clients — surfaced as a sticky right-edge
+// button and a small link in the top contact bar.
+if (!defined('CLIENT_PORTAL_URL')) define('CLIENT_PORTAL_URL', 'https://portal.wealthmagic.in/FintsoWMlogin.aspx');
+
 // --- Feature flags --------------------------------------------------------
 //
 // COMPLIANCE HOLD: PMS and AIF distribution require confirmed NISM-XXI-A

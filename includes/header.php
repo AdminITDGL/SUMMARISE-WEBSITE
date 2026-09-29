@@ -38,9 +38,15 @@ $__root = site_root();
       </div>
 
     </div>
-    <div class="top-bar__badge">
-      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4z"/></svg>
-      AMFI · <?= AMFI_ARN ?>  |  IRDAI · <?= IRDAI_AGENCY_CODE ?>
+    <div class="top-bar__right">
+      <a class="top-bar__portal" href="<?= htmlspecialchars(CLIENT_PORTAL_URL, ENT_QUOTES) ?>" target="_blank" rel="noopener" aria-label="Client login — WealthMagic portal">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span>Client Login</span>
+      </a>
+      <span class="top-bar__badge">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 9.5-8 10-4.5-.5-8-5-8-10V6l8-4z"/></svg>
+        AMFI · <?= AMFI_ARN ?>  |  IRDAI · <?= IRDAI_AGENCY_CODE ?>
+      </span>
     </div>
   </div>
 </div>
