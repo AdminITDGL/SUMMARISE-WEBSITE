@@ -27,6 +27,34 @@ $__root = site_root();
         <p class="small mt-2" style="color:rgba(255,255,255,0.55);">
           Serving HNI families, business owners &amp; senior professionals across India since <?= BIZ_FOUNDED ?>.
         </p>
+        <?php
+          $__footer_socials = array_filter([
+            'facebook'  => ['url' => SOCIAL_FACEBOOK,         'label' => 'Facebook'],
+            'instagram' => ['url' => SOCIAL_INSTAGRAM,        'label' => 'Instagram'],
+            'youtube'   => ['url' => SOCIAL_YOUTUBE,          'label' => 'YouTube'],
+            'linkedin'  => ['url' => SOCIAL_LINKEDIN_COMPANY, 'label' => 'LinkedIn'],
+            'x'         => ['url' => SOCIAL_X,                'label' => 'X (Twitter)'],
+          ], function($s) { return !empty($s['url']); });
+        ?>
+        <?php if ($__footer_socials): ?>
+        <div class="footer-socials" aria-label="Summarise on social media">
+          <?php foreach ($__footer_socials as $key => $s): ?>
+            <a href="<?= htmlspecialchars($s['url'], ENT_QUOTES) ?>" target="_blank" rel="noopener" aria-label="Follow Summarise on <?= htmlspecialchars($s['label'], ENT_QUOTES) ?>">
+              <?php if ($key === 'facebook'): ?>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.52l.38-2.93H13.5V8.69c0-.85.24-1.43 1.46-1.43h1.56V4.64c-.27-.03-1.2-.11-2.28-.11-2.25 0-3.8 1.37-3.8 3.9v2.18H8v2.93h2.44V21z"/></svg>
+              <?php elseif ($key === 'instagram'): ?>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/></svg>
+              <?php elseif ($key === 'youtube'): ?>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2c-.2-1.2-.9-2-2.1-2.2C17.5 4.6 12 4.6 12 4.6s-5.5 0-7.5.4c-1.2.2-1.9 1-2.1 2.2C2 9.2 2 12 2 12s0 2.8.4 4.8c.2 1.2.9 2 2.1 2.2 2 .4 7.5.4 7.5.4s5.5 0 7.5-.4c1.2-.2 1.9-1 2.1-2.2.4-2 .4-4.8.4-4.8s0-2.8-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+              <?php elseif ($key === 'linkedin'): ?>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm7 0h3.84v1.65h.05c.53-1 1.84-2.05 3.79-2.05 4.05 0 4.8 2.66 4.8 6.12V21H18.5v-5.6c0-1.33-.03-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95V21H10V9z"/></svg>
+              <?php elseif ($key === 'x'): ?>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <?php endif; ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
       </div>
 
       <div>
@@ -108,6 +136,36 @@ $__root = site_root();
     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
     <span>Client Login</span>
   </a>
+  <?php
+    // --- Side-rail social icons (only renders handles that are set) ---
+    $__social_rail = array_filter([
+      'facebook'  => ['url' => SOCIAL_FACEBOOK,  'label' => 'Follow Summarise on Facebook'],
+      'instagram' => ['url' => SOCIAL_INSTAGRAM, 'label' => 'Follow @sumcorp_official on Instagram'],
+      'youtube'   => ['url' => SOCIAL_YOUTUBE,   'label' => 'Subscribe to Summarise on YouTube'],
+      'linkedin'  => ['url' => SOCIAL_LINKEDIN_COMPANY, 'label' => 'Follow Summarise on LinkedIn'],
+      'x'         => ['url' => SOCIAL_X, 'label' => 'Follow Summarise on X'],
+    ], function($s) { return !empty($s['url']); });
+  ?>
+  <?php if ($__social_rail): ?>
+  <div class="sticky-socials" aria-label="Follow Summarise on social media">
+    <?php foreach ($__social_rail as $key => $s): ?>
+      <a class="sticky-social sticky-social--<?= $key ?>" href="<?= htmlspecialchars($s['url'], ENT_QUOTES) ?>" target="_blank" rel="noopener" aria-label="<?= htmlspecialchars($s['label'], ENT_QUOTES) ?>">
+        <?php if ($key === 'facebook'): ?>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.52l.38-2.93H13.5V8.69c0-.85.24-1.43 1.46-1.43h1.56V4.64c-.27-.03-1.2-.11-2.28-.11-2.25 0-3.8 1.37-3.8 3.9v2.18H8v2.93h2.44V21z"/></svg>
+        <?php elseif ($key === 'instagram'): ?>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/></svg>
+        <?php elseif ($key === 'youtube'): ?>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 7.2c-.2-1.2-.9-2-2.1-2.2C17.5 4.6 12 4.6 12 4.6s-5.5 0-7.5.4c-1.2.2-1.9 1-2.1 2.2C2 9.2 2 12 2 12s0 2.8.4 4.8c.2 1.2.9 2 2.1 2.2 2 .4 7.5.4 7.5.4s5.5 0 7.5-.4c1.2-.2 1.9-1 2.1-2.2.4-2 .4-4.8.4-4.8s0-2.8-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
+        <?php elseif ($key === 'linkedin'): ?>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm7 0h3.84v1.65h.05c.53-1 1.84-2.05 3.79-2.05 4.05 0 4.8 2.66 4.8 6.12V21H18.5v-5.6c0-1.33-.03-3.05-1.86-3.05-1.86 0-2.14 1.45-2.14 2.95V21H10V9z"/></svg>
+        <?php elseif ($key === 'x'): ?>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <?php endif; ?>
+      </a>
+    <?php endforeach; ?>
+  </div>
+  <?php endif; ?>
+
   <a class="sticky-btn sticky-btn--wa" href="https://wa.me/<?= BIZ_WHATSAPP ?>?text=<?= urlencode('Hi Summarise Corporate, I would like to book a consultation.') ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
     <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.4c0 2.5.7 4.9 2 7L3 29l6.9-2.4c2 .9 4 1.3 6.2 1.3h.1c7 0 12.5-5.5 12.5-12.4C28.7 8.5 23 3 16 3zm0 22.6c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.1 1.4 1.4-4-.3-.4c-1-1.6-1.5-3.5-1.5-5.4 0-5.6 4.6-10.1 10.2-10.1s10.2 4.5 10.2 10.1c0 5.6-4.6 10-10.2 10zm5.8-7.5c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2c-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5H12c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.8-.7 2-1.5.2-.7.2-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>
   </a>

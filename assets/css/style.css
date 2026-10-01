@@ -1707,6 +1707,55 @@ a.card:hover { text-decoration: none; color: inherit; }
   .sticky-btn--portal { padding: 0.9rem; border-radius: 50%; }
 }
 
+/* Side-rail social icons — compact circles between the primary CTAs */
+.sticky-socials {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 4px 2px;
+}
+.sticky-social {
+  width: 38px; height: 38px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  color: var(--ink-navy);
+  border: 1px solid rgba(15,36,66,0.08);
+  box-shadow: 0 2px 10px rgba(15,36,66,0.14);
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.sticky-social svg { width: 18px; height: 18px; }
+.sticky-social:hover { transform: translateY(-2px); text-decoration: none; }
+.sticky-social--facebook:hover  { background: #1877F2; color: #fff; border-color: #1877F2; }
+.sticky-social--instagram:hover { background: linear-gradient(135deg,#F58529 0%,#DD2A7B 50%,#8134AF 100%); color: #fff; border-color: transparent; }
+.sticky-social--youtube:hover   { background: #FF0000; color: #fff; border-color: #FF0000; }
+.sticky-social--linkedin:hover  { background: #0A66C2; color: #fff; border-color: #0A66C2; }
+.sticky-social--x:hover         { background: #000; color: #fff; border-color: #000; }
+@media (max-width: 480px) {
+  .sticky-social { width: 34px; height: 34px; }
+  .sticky-social svg { width: 16px; height: 16px; }
+}
+
+/* Footer social row — inline treatment in the brand column */
+.footer-socials {
+  display: flex; gap: 10px; margin-top: 1rem;
+}
+.footer-socials a {
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: var(--champagne-light, #E6D2A6);
+  border: 1px solid rgba(201,176,124,0.25);
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.footer-socials a:hover {
+  transform: translateY(-2px);
+  background: var(--champagne-gold);
+  color: var(--ink-navy);
+  border-color: var(--champagne-gold);
+  text-decoration: none;
+}
+.footer-socials svg { width: 16px; height: 16px; }
+
 /* --- Modal ---------------------------------------------------------- */
 .modal { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; }
 .modal.is-open { display: flex; }

@@ -86,13 +86,14 @@ if (!defined('FEATURE_PMS_ENABLED')) define('FEATURE_PMS_ENABLED', false);
 if (!defined('FEATURE_AIF_ENABLED')) define('FEATURE_AIF_ENABLED', false);
 
 // --- Social profiles ------------------------------------------------------
-// All "Make new one" per onboarding form — placeholders left here so the
-// footer/schema pick them up as soon as the accounts exist.
+// Official Summarise handles — provided by client 2026-10-01. Tracking
+// params (notif_id, stkn, ref) stripped. YouTube "studio.youtube.com" URL
+// converted to the public channel URL. LinkedIn + X: pending.
 if (!defined('SOCIAL_LINKEDIN_COMPANY')) define('SOCIAL_LINKEDIN_COMPANY', '');
 if (!defined('SOCIAL_LINKEDIN_KURESH'))  define('SOCIAL_LINKEDIN_KURESH',  '');
-if (!defined('SOCIAL_INSTAGRAM'))        define('SOCIAL_INSTAGRAM',        '');
-if (!defined('SOCIAL_FACEBOOK'))         define('SOCIAL_FACEBOOK',         '');
-if (!defined('SOCIAL_YOUTUBE'))          define('SOCIAL_YOUTUBE',          '');
+if (!defined('SOCIAL_INSTAGRAM'))        define('SOCIAL_INSTAGRAM',        'https://www.instagram.com/sumcorp_official');
+if (!defined('SOCIAL_FACEBOOK'))         define('SOCIAL_FACEBOOK',         'https://www.facebook.com/profile.php?id=61595026257109');
+if (!defined('SOCIAL_YOUTUBE'))          define('SOCIAL_YOUTUBE',          'https://www.youtube.com/channel/UCQ_RRQfyzIgxkMAnD8uzkWg');
 if (!defined('SOCIAL_X'))                define('SOCIAL_X',                '');
 
 // --- Analytics placeholders (fill once accounts exist) --------------------
