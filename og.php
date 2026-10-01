@@ -33,9 +33,20 @@ $white  = [0xFF, 0xFF, 0xFF];
 $muted  = [0xB8, 0xC6, 0xD8];
 
 // ---- Fallback path if GD is unavailable ----------------------------------
+// Facebook/LinkedIn/WhatsApp scrapers don't reliably follow redirects for
+// og:image, so stream the logo file inline instead of 302-ing. This is
+// temporary — install php-gd on the droplet to get the branded card:
+//   sudo apt-get install -y php7.2-gd && sudo systemctl reload php7.2-fpm
 if (!function_exists('imagecreatetruecolor')) {
-    // Fall back to serving the flat logo file. Better than a broken link.
-    header('Location: /assets/img/brand/logo.png', true, 302);
+    $__fallback = __DIR__ . '/assets/img/brand/logo.png';
+    if (is_readable($__fallback)) {
+        header('Content-Type: image/png');
+        header('Cache-Control: public, max-age=86400'); // 1-day cache during GD-missing fallback
+        header('X-OG-Generator: summarise/1-fallback');
+        readfile($__fallback);
+    } else {
+        http_response_code(500);
+    }
     exit;
 }
 
