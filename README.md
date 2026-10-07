@@ -138,3 +138,6 @@ C:\Users\Prashant\Desktop\ALL\summarise.in
 
 - **Client (Summarise Corporate):** Kuresh Morbiwala — kuresh@summarise.in — +91 98920 38451
 - **Agency (ITD GrowthLabs):** info@itdgrowthlabs.com
+
+
+<!-- Security scan triggered at 2026-10-07 11:44:08 -->
