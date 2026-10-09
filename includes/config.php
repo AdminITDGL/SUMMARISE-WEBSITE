@@ -74,7 +74,7 @@ if (!defined('CALENDLY_URL')) define('CALENDLY_URL', 'https://calendly.com/conne
 // --- Client Portal (WealthMagic / FintsoWM) --------------------------------
 // The login URL for existing clients — surfaced as a sticky right-edge
 // button and a small link in the top contact bar.
-if (!defined('CLIENT_PORTAL_URL')) define('CLIENT_PORTAL_URL', 'https://portal.wealthmagic.in/FintsoWMlogin.aspx');
+if (!defined('CLIENT_PORTAL_URL')) define('CLIENT_PORTAL_URL', 'https://mfppl.wealthmagic.in/');
 
 // --- Feature flags --------------------------------------------------------
 //
