@@ -97,7 +97,7 @@ if (!defined('SOCIAL_YOUTUBE'))          define('SOCIAL_YOUTUBE',          'http
 if (!defined('SOCIAL_X'))                define('SOCIAL_X',                '');
 
 // --- Analytics placeholders (fill once accounts exist) --------------------
-if (!defined('GA4_MEASUREMENT_ID'))    define('GA4_MEASUREMENT_ID',    ''); // e.g. G-XXXXXXX
+if (!defined('GA4_MEASUREMENT_ID'))    define('GA4_MEASUREMENT_ID',    'G-LV5KEVD3WH'); // Summarise GA4 property (2026-10-17)
 if (!defined('GSC_VERIFICATION_CODE')) define('GSC_VERIFICATION_CODE', ''); // meta content value only
 
 // --- Path helpers ---------------------------------------------------------
